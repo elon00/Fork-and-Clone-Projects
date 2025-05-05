@@ -3,270 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body link="style.css"><script src="
-script.js"></script></html> controls
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Clone</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Christian Faith Media</title>
+    <script>
+        // Source arrays for audio and video files
+        const audioSources = [
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+            // Add your 6 audio file URLs here
+        ];
+
+        const videoSources = [
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            // Add your 6 video file URLs here
+        ];
+
+        let currentAudioIndex = 0;
+        let currentVideoIndex = 0;
+
+        function playRandomAudio() {
+            currentAudioIndex = Math.floor(Math.random() * audioSources.length);
+            const audioPlayer = document.getElementById('audio-player');
+            audioPlayer.src = audioSources[currentAudioIndex];
+
+            audioPlayer.onerror = function() {
+                console.error("Error loading audio source:", audioPlayer.src);
+                playRandomAudio(); // Try again.
+            };
+        }
+
+        function playRandomVideo() {
+            currentVideoIndex = Math.floor(Math.random() * videoSources.length);
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.src = videoSources[currentVideoIndex];
+             videoPlayer.onerror = function(){
+                console.error("Error loading video source:", videoPlayer.src);
+                playRandomVideo();
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-        .bg-gradient-to-br {
-            background-image: linear-gradient(to bottom right, #0f172a, #1e293b);
-        }
-        .btn-red {
-            background-color: #e50914;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.25rem;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        .btn-red:hover {
-            background-color: #c81e28;
-        }
-        .outline-white {
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.25rem;
-            font-weight: 400;
-            transition: border-color 0.3s ease, color 0.3s ease;
-        }
-        .outline-white:hover {
-            border-color: rgba(255, 255, 255, 0.8);
-            color: #fff;
-        }
-        .media-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%;
-            overflow: hidden;
-            border-radius: 0.25rem;
-            transition: transform 0.2s ease-in-out;
-        }
-        .media-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-        .media-container img,
-        .media-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.3s ease;
-        }
-        .media-container video {
-            cursor: pointer;
-        }
-        .media-container video:hover {
-            opacity: 0.8;
-        }
-        .media-container.live-photo {
-        }
-        .show-card-content {
-            padding: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        .show-card-content:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+      }
+      header {
+        width: 100%;
+        background-color: #5091e8;
+        color: white;
+        text-align: center;
+        padding: 1em 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        width: 90%;
+        max-width: 1000px;
+      }
+      .section {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        text-align: center;
+      }
+      .section h2{
+        color: #0c305e;
+      }
+      #video-section video {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+       #audio-section audio {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+      footer {
+        width: 100%;
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 1em 0;
+        margin-top: 20px;
+        position: relative;
+        bottom: 0;
+      }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <header class="bg-gradient-to-br from-gray-900 to-black bg-opacity-90 sticky top-0 z-10">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-red-600">Netflix</a>
-            <nav class="hidden md:flex space-x-4">
-                <a href="#" class="text-gray-300 hover:text-white transition-colors">Home</a>
-                <a href="#" class="text-gray-300 hover:text-white transition-colors">TV Shows</a>
-                <a href="#" class="text-gray-300 hover:text-white transition-colors">Movies</a>
-                <a href="#" class="text-gray-300 hover:text-white transition-colors">Latest</a>
-                <a href="#" class="text-gray-300 hover:text-white transition-colors">My List</a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <button class="text-gray-300 hover:text-white transition-colors">Search</button>
-                <button class="text-gray-300 hover:text-white transition-colors">Account</button>
-            </div>
-        </div>
+<body>
+    <header>
+        <h1>Welcome to Christian Faith Media</h1>
+        <p>Experience uplifting audio and video content.</p>
     </header>
-    <main class="container mx-auto px-4 py-8">
-        <section class="hero text-center mb-12">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">Unlimited movies, TV shows, and more.</h1>
-            <p class="text-lg sm:text-xl text-gray-300 mb-6">Watch anywhere. Cancel anytime.</p>
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <button class="btn-red text-lg sm:text-xl">Try 30 Days Free</button>
-                <button class="outline-white text-lg sm:text-xl">Learn More</button>
-            </div>
+    <main>
+        <section id="audio-section" class="section">
+            <h2>Featured Audio</h2>
+            <audio id="audio-player" controls autoplay >
+                <source src="" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+            <p>Enjoy a selection of Christian music and messages.</p>
         </section>
-        <section class="featured-content mb-12">
-            <h2 class="text-2xl font-semibold text-white mb-6">Featured Shows</h2>
-            <div id="featured-shows-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            </div>
+        <section id="video-section" class="section">
+            <h2>Featured Video</h2>
+            <video id="video-player" controls autoplay >
+                <source src="" type="video/mp4">
+                Your browser does not support the video element.
+            </video>
+            <p>Watch inspiring videos and sermons.</p>
         </section>
     </main>
-    <footer class="bg-gray-900 text-gray-400 py-6">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 Netflix Clone. All rights reserved.</p>
-            <p>This is a recreation for educational purposes. Netflix is a registered trademark.</p>
-        </div>
+    <footer>
+        <p>&copy; 2024 Christian Faith Media. All rights reserved.</p>
     </footer>
     <script>
-        const featuredShowsContainer = document.getElementById("featured-shows-container");
-        function createMediaElement(show) {
-            let mediaElement;
-            if (show.type === "video") {
-                mediaElement = document.createElement("video");
-                mediaElement.src = show.src;
-                mediaElement.autoplay = true;
-                mediaElement.loop = true;
-                mediaElement.muted = true;
-                mediaElement.playsInline = true;
-                mediaElement.onerror = () => {
-                    console.error("Failed to load video:", show.src);
-                    mediaElement.src = "https://via.placeholder.com/300x170?text=Video+Error";
-                };
-            } else if (show.type === "image") {
-                mediaElement = document.createElement("img");
-                mediaElement.src = show.src;
-                mediaElement.alt = show.title + " Poster";
-                mediaElement.onerror = () => {
-                    console.error("Failed to load image:", show.src);
-                    mediaElement.src = "https://via.placeholder.com/300x170?text=Image+Error";
-                };
-            } else {
-                mediaElement = document.createElement("img");
-                mediaElement.src = "https://via.placeholder.com/300x170?text=Media+Error";
-                mediaElement.alt = "Media Placeholder";
-                console.warn("Unknown media type. Displaying placeholder.");
-            }
-            return mediaElement;
-        }
-        function createShowCard(show) {
-            const card = document.createElement("div");
-            card.className = "bg-gray-800 rounded-md overflow-hidden shadow-md";
-            const mediaContainer = document.createElement("div");
-            mediaContainer.className = "media-container";
-            const mediaElement = createMediaElement(show);
-            mediaContainer.appendChild(mediaElement);
-            const content = document.createElement("div");
-            content.className = "p-4 show-card-content";
-            const title = document.createElement("h3");
-            title.textContent = show.title;
-            title.className = "text-md font-semibold text-white";
-            const genre = document.createElement("p");
-            genre.textContent = `Genre: ${show.genre}`;
-            genre.className = "text-gray-400 text-sm";
-            content.appendChild(title);
-            content.appendChild(genre);
-            card.appendChild(mediaContainer);
-            card.appendChild(content);
-            return card;
-        }
-        function renderFeaturedShows(shows, container) {
-            if (!Array.isArray(shows)) {
-                throw new TypeError("Shows must be an array.");
-            }
-            if (!(container instanceof HTMLElement)) {
-                throw new TypeError("Container must be an HTMLElement.");
-            }
-            container.innerHTML = "";
-            shows.forEach((show, index) => {
-                try {
-                    const showCard = createShowCard(show);
-                    container.appendChild(showCard);
-                } catch (error) {
-                    console.error(`Error creating card for show at index ${index}:`, error, show);
-                    const errorCard = document.createElement("div");
-                    errorCard.className = "bg-red-800 text-white p-4 rounded-md";
-                    errorCard.textContent = `Error: Could not display show at index ${index}.`;
-                    container.appendChild(errorCard);
-                }
-            });
-        }
-        window.addEventListener('load', () => {
-            try {
-                const featuredShowsData = [
-                    {
-                        title: "Show Title 1",
-                        genre: "Drama",
-                        type: "video",
-                        src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
-                    },
-                    {
-                        title: "Show Title 2",
-                        genre: "Comedy",
-                        type: "image",
-                        src: "https://via.placeholder.com/300x170",
-                    },
-                    {
-                        title: "Show Title 3",
-                        genre: "Action",
-                        type: "video",
-                        src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
-                    },
-                    {
-                        title: "Show Title 4",
-                        genre: "Sci-Fi",
-                        type: "image",
-                        src: "https://via.placeholder.com/300x170",
-                    },
-                    {
-                        title: "Show Title 5",
-                        genre: "Horror",
-                        type: "image",
-                        src: "https://via.placeholder.com/300x170",
-                    },
-                    {
-                        title: "Show Title 6",
-                        genre: "Thriller",
-                        type: "video",
-                        src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
-                    },
-                    {
-                        title: "Show Title 7",
-                        genre: "Romance",
-                        type: "image",
-                        src: "https://via.placeholder.com/300x170",
-                    },
-                    {
-                        title: "Show Title 8",
-                        genre: "Documentary",
-                        type: "image",
-                        src: "https://via.placeholder.com/300x170",
-                    },
-                ];
-                if (!featuredShowsData) {
-                    throw new Error("Featured shows data is not defined.");
-                }
-                renderFeaturedShows(featuredShowsData, featuredShowsContainer);
-            } catch (error) {
-                console.error("Failed to initialize featured shows:", error);
-                const errorMessage = document.createElement("p");
-                errorMessage.className = "error-message";
-                errorMessage.textContent = "Sorry, we could not load the featured shows.";
-                featuredShowsContainer.parentElement.insertBefore(errorMessage, featuredShowsContainer);
-            }
-        });
+        const audioPlayer = document.getElementById('audio-player');
+        const videoPlayer = document.getElementById('video-player');
+
+        playRandomAudio();
+        playRandomVideo();
+
+        audioPlayer.addEventListener('ended', playRandomAudio);
+        videoPlayer.addEventListener('ended', playRandomVideo);
     </script>
 </body>
 </html>
-
