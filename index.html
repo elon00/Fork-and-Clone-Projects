@@ -7,1278 +7,266 @@
 </head>
 <body>
     
-</body>
-</html><!DOCTYPE html>
+</body link="style.css"><script src="
+script.js"></script></html> controls
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureVault - Password Manager</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+    <title>Netflix Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .fade-in {
-            animation: fadeIn 0.5s;
+        body {
+            font-family: 'Roboto', sans-serif;
         }
-        
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .bg-gradient-to-br {
+            background-image: linear-gradient(to bottom right, #0f172a, #1e293b);
         }
-        
-        .password-strength-meter {
-            height: 10px;
-            width: 100%;
-            background-color: #ddd;
-            border-radius: 3px;
-            margin-top: 5px;
+        .btn-red {
+            background-color: #e50914;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
-        
-        .password-strength-meter div {
-            height: 10px;
-            border-radius: 3px;
-            transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+        .btn-red:hover {
+            background-color: #c81e28;
         }
-        
-        .copy-tooltip {
-            position: relative;
+        .outline-white {
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-weight: 400;
+            transition: border-color 0.3s ease, color 0.3s ease;
         }
-        
-        .copy-tooltip .tooltip-text {
-            visibility: hidden;
-            width: 60px;
-            background-color: #555;
+        .outline-white:hover {
+            border-color: rgba(255, 255, 255, 0.8);
             color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -30px;
-            opacity: 0;
-            transition: opacity 0.3s;
         }
-        
-        .copy-tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
+        .media-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        .media-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        .media-container img,
+        .media-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        .media-container video {
+            cursor: pointer;
+        }
+        .media-container video:hover {
+            opacity: 0.8;
+        }
+        .media-container.live-photo {
+        }
+        .show-card-content {
+            padding: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .show-card-content:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen font-sans">
-    <div id="app"></div>
-
+<body class="bg-gray-900 text-white">
+    <header class="bg-gradient-to-br from-gray-900 to-black bg-opacity-90 sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-red-600">Netflix</a>
+            <nav class="hidden md:flex space-x-4">
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">Home</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">TV Shows</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">Movies</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">Latest</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">My List</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-300 hover:text-white transition-colors">Search</button>
+                <button class="text-gray-300 hover:text-white transition-colors">Account</button>
+            </div>
+        </div>
+    </header>
+    <main class="container mx-auto px-4 py-8">
+        <section class="hero text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">Unlimited movies, TV shows, and more.</h1>
+            <p class="text-lg sm:text-xl text-gray-300 mb-6">Watch anywhere. Cancel anytime.</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="btn-red text-lg sm:text-xl">Try 30 Days Free</button>
+                <button class="outline-white text-lg sm:text-xl">Learn More</button>
+            </div>
+        </section>
+        <section class="featured-content mb-12">
+            <h2 class="text-2xl font-semibold text-white mb-6">Featured Shows</h2>
+            <div id="featured-shows-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-900 text-gray-400 py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Netflix Clone. All rights reserved.</p>
+            <p>This is a recreation for educational purposes. Netflix is a registered trademark.</p>
+        </div>
+    </footer>
     <script>
-        // Utility functions
-        const encrypt = (text, key) => {
-            // Simple XOR encryption (just for demonstration)
-            return btoa(
-                text.split('').map((char, index) => 
-                    String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(index % key.length))
-                ).join('')
-            );
-        };
-        
-        const decrypt = (encrypted, key) => {
-            try {
-                return atob(encrypted).split('').map((char, index) => 
-                    String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(index % key.length))
-                ).join('');
-            } catch (e) {
-                console.error("Decryption error:", e);
-                return null;
-            }
-        };
-        
-        const generatePassword = (length = 16, hasNumbers = true, hasSymbols = true, hasUppercase = true) => {
-            const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
-            const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const numberChars = '0123456789';
-            const symbolChars = '!@#$%^&*()_-+=<>?/[]{},.:;';
-            
-            let allowedChars = lowerChars;
-            if (hasUppercase) allowedChars += upperChars;
-            if (hasNumbers) allowedChars += numberChars;
-            if (hasSymbols) allowedChars += symbolChars;
-            
-            let password = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * allowedChars.length);
-                password += allowedChars[randomIndex];
-            }
-            
-            return password;
-        };
-        
-        const calculatePasswordStrength = (password) => {
-            if (!password) return { score: 0, message: "No password" };
-            
-            let score = 0;
-            
-            // Length check
-            if (password.length > 5) score += 1;
-            if (password.length > 8) score += 1;
-            if (password.length > 12) score += 1;
-            
-            // Complexity checks
-            if (/[A-Z]/.test(password)) score += 1;
-            if (/[a-z]/.test(password)) score += 1;
-            if (/[0-9]/.test(password)) score += 1;
-            if (/[^A-Za-z0-9]/.test(password)) score += 1;
-            
-            // Convert score to a message
-            let message = "";
-            if (score < 3) message = "Weak";
-            else if (score < 5) message = "Moderate";
-            else if (score < 7) message = "Strong";
-            else message = "Very Strong";
-            
-            return { score, message };
-        };
-        
-        // Initialize local storage DB
-        const initDB = () => {
-            if (!localStorage.getItem('users')) {
-                localStorage.setItem('users', JSON.stringify([]));
-            }
-            if (!localStorage.getItem('passwords')) {
-                localStorage.setItem('passwords', JSON.stringify([]));
-            }
-        };
-        
-        // User operations
-        const createUser = (username, email, masterPassword) => {
-            const users = JSON.parse(localStorage.getItem('users'));
-            const existingUser = users.find(u => u.email === email);
-            
-            if (existingUser) {
-                return { success: false, message: "Email already registered" };
-            }
-            
-            // Hash the master password (in a real app you'd use bcrypt or similar)
-            const hashedPassword = encrypt(masterPassword, email);
-            
-            users.push({
-                id: Date.now().toString(),
-                username,
-                email,
-                password: hashedPassword,
-                createdAt: new Date().toISOString()
-            });
-            
-            localStorage.setItem('users', JSON.stringify(users));
-            return { success: true };
-        };
-        
-        const loginUser = (email, masterPassword) => {
-            const users = JSON.parse(localStorage.getItem('users'));
-            const user = users.find(u => u.email === email);
-            
-            if (!user) {
-                return { success: false, message: "User not found" };
-            }
-            
-            // Verify password
-            const decryptedPassword = decrypt(user.password, email);
-            if (decryptedPassword === masterPassword) {
-                // Don't store the actual password in session
-                sessionStorage.setItem('currentUser', JSON.stringify({
-                    id: user.id,
-                    username: user.username,
-                    email: user.email
-                }));
-                // Store encryption key securely (in memory only for this session)
-                sessionStorage.setItem('encryptionKey', masterPassword);
-                return { success: true, user: { id: user.id, username: user.username, email: user.email } };
-            }
-            
-            return { success: false, message: "Invalid credentials" };
-        };
-        
-        const logoutUser = () => {
-            sessionStorage.removeItem('currentUser');
-            sessionStorage.removeItem('encryptionKey');
-            renderLoginPage();
-        };
-        
-        const getCurrentUser = () => {
-            const userStr = sessionStorage.getItem('currentUser');
-            return userStr ? JSON.parse(userStr) : null;
-        };
-        
-        // Password vault operations
-        const savePassword = (title, username, password, website, notes = "") => {
-            const user = getCurrentUser();
-            if (!user) return { success: false, message: "Not logged in" };
-            
-            const encryptionKey = sessionStorage.getItem('encryptionKey');
-            const passwords = JSON.parse(localStorage.getItem('passwords'));
-            
-            // Encrypt sensitive data
-            const encryptedPassword = encrypt(password, encryptionKey);
-            const encryptedUsername = encrypt(username, encryptionKey);
-            const encryptedNotes = notes ? encrypt(notes, encryptionKey) : "";
-            
-            const newPassword = {
-                id: Date.now().toString(),
-                userId: user.id,
-                title,
-                username: encryptedUsername,
-                password: encryptedPassword,
-                website,
-                notes: encryptedNotes,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
-            
-            passwords.push(newPassword);
-            localStorage.setItem('passwords', JSON.stringify(passwords));
-            
-            return { success: true };
-        };
-        
-        const updatePassword = (id, title, username, password, website, notes = "") => {
-            const user = getCurrentUser();
-            if (!user) return { success: false, message: "Not logged in" };
-            
-            const encryptionKey = sessionStorage.getItem('encryptionKey');
-            const passwords = JSON.parse(localStorage.getItem('passwords'));
-            
-            const index = passwords.findIndex(p => p.id === id && p.userId === user.id);
-            if (index === -1) return { success: false, message: "Password not found" };
-            
-            // Encrypt sensitive data
-            const encryptedPassword = encrypt(password, encryptionKey);
-            const encryptedUsername = encrypt(username, encryptionKey);
-            const encryptedNotes = notes ? encrypt(notes, encryptionKey) : "";
-            
-            passwords[index] = {
-                ...passwords[index],
-                title,
-                username: encryptedUsername,
-                password: encryptedPassword,
-                website,
-                notes: encryptedNotes,
-                updatedAt: new Date().toISOString()
-            };
-            
-            localStorage.setItem('passwords', JSON.stringify(passwords));
-            return { success: true };
-        };
-        
-        const deletePassword = (id) => {
-            const user = getCurrentUser();
-            if (!user) return { success: false, message: "Not logged in" };
-            
-            const passwords = JSON.parse(localStorage.getItem('passwords'));
-            const filteredPasswords = passwords.filter(p => !(p.id === id && p.userId === user.id));
-            
-            localStorage.setItem('passwords', JSON.stringify(filteredPasswords));
-            return { success: true };
-        };
-        
-        const getUserPasswords = () => {
-            const user = getCurrentUser();
-            if (!user) return [];
-            
-            const encryptionKey = sessionStorage.getItem('encryptionKey');
-            const passwords = JSON.parse(localStorage.getItem('passwords'));
-            
-            return passwords
-                .filter(p => p.userId === user.id)
-                .map(p => ({
-                    ...p,
-                    username: decrypt(p.username, encryptionKey),
-                    password: decrypt(p.password, encryptionKey),
-                    notes: p.notes ? decrypt(p.notes, encryptionKey) : ""
-                }));
-        };
-        
-        // UI Components
-        const Navbar = (user) => {
-            const styles = user 
-                ? 'bg-indigo-600' 
-                : 'bg-gradient-to-r from-purple-600 to-indigo-600';
-                
-            return `
-                <nav class="${styles} p-4 shadow-md">
-                    <div class="container mx-auto flex justify-between items-center">
-                        <div class="flex items-center text-white">
-                            <i class="fas fa-shield-alt text-2xl mr-2"></i>
-                            <h1 class="text-xl font-bold">SecureVault</h1>
-                        </div>
-                        ${user ? `
-                            <div class="flex items-center">
-                                <span class="text-white mr-4">
-                                    <i class="fas fa-user mr-1"></i> ${user.username}
-                                </span>
-                                <button onclick="logoutUser()" class="bg-white text-indigo-600 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition">
-                                    Logout
-                                </button>
-                            </div>
-                        ` : ''}
-                    </div>
-                </nav>
-            `;
-        };
-        
-        const Toast = (message, type = "success") => {
-            const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
-            const icon = type === "success" ? "fa-check-circle" : "fa-exclamation-circle";
-            
-            const toast = document.createElement("div");
-            toast.className = `${bgColor} text-white py-2 px-4 rounded-md fixed top-4 right-4 shadow-lg flex items-center fade-in`;
-            toast.innerHTML = `
-                <i class="fas ${icon} mr-2"></i>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.5s';
-                setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 500);
-            }, 3000);
-        };
-        
-        const LoginForm = () => {
-            return `
-                <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h2>
-                    <form id="login-form">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                                Email Address
-                            </label>
-                            <input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                id="email"
-                                type="email"
-                                placeholder="you@example.com"
-                                required
-                            >
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                                Master Password
-                            </label>
-                            <div class="relative">
-                                <input
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="password"
-                                    type="password"
-                                    placeholder="******************"
-                                    required
-                                >
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="togglePasswordVisibility('password')">
-                                    <i class="fas fa-eye text-gray-500"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <button
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring transition"
-                                type="submit"
-                            >
-                                Sign In
-                            </button>
-                            <button
-                                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium transition"
-                                type="button"
-                                onclick="renderSignupPage()"
-                            >
-                                Create account
-                            </button>
-                        </div>
-                    </form>
-                    <div class="text-center mt-8">
-                        <p class="text-gray-600 text-sm">Demo credentials:</p>
-                        <p class="text-gray-600 text-sm">Email: demo@example.com</p>
-                        <p class="text-gray-600 text-sm">Password: Demo@123</p>
-                    </div>
-                </div>
-            `;
-        };
-        
-        const SignupForm = () => {
-            return `
-                <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Create Account</h2>
-                    <form id="signup-form">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                                Username
-                            </label>
-                            <input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                id="username"
-                                type="text"
-                                placeholder="John Doe"
-                                required
-                            >
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-email">
-                                Email Address
-                            </label>
-                            <input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                id="signup-email"
-                                type="email"
-                                placeholder="you@example.com"
-                                required
-                            >
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="master-password">
-                                Master Password
-                            </label>
-                            <div class="relative">
-                                <input
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="master-password"
-                                    type="password"
-                                    placeholder="Create a strong master password"
-                                    required
-                                    oninput="updatePasswordStrength('master-password', 'password-strength')"
-                                >
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="togglePasswordVisibility('master-password')">
-                                    <i class="fas fa-eye text-gray-500"></i>
-                                </div>
-                            </div>
-                            <div class="password-strength-meter mt-2">
-                                <div id="password-strength" class="bg-gray-300" style="width: 0%"></div>
-                            </div>
-                            <p id="password-strength-text" class="text-xs text-gray-600 mt-1">Password strength: None</p>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm-password">
-                                Confirm Master Password
-                            </label>
-                            <div class="relative">
-                                <input
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="confirm-password"
-                                    type="password"
-                                    placeholder="Confirm your password"
-                                    required
-                                >
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="togglePasswordVisibility('confirm-password')">
-                                    <i class="fas fa-eye text-gray-500"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <button
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring transition"
-                                type="submit"
-                            >
-                                Create Account
-                            </button>
-                            <button
-                                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium transition"
-                                type="button"
-                                onclick="renderLoginPage()"
-                            >
-                                Already have an account?
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            `;
-        };
-        
-        const Dashboard = (passwords) => {
-            return `
-                <div class="container mx-auto py-8 px-4 md:px-0">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                        <h2 class="text-2xl font-bold text-gray-800">Your Password Vault</h2>
-                        <button onclick="showAddPasswordModal()" class="mt-4 md:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring transition inline-flex items-center">
-                            <i class="fas fa-plus mr-2"></i> Add Password
-                        </button>
-                    </div>
-                
-                    <div class="bg-white rounded-lg shadow-md p-4 mb-8">
-                        <div class="flex flex-col md:flex-row justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-700 mb-4 md:mb-0">Password Generator</h3>
-                            <div class="flex items-center space-x-2">
-                                <div class="flex items-center">
-                                    <input id="length-slider" type="range" min="8" max="32" value="16" class="mr-2" oninput="updatePasswordLength()">
-                                    <span id="length-value" class="text-gray-700">16</span>
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" id="include-numbers" class="form-checkbox" checked>
-                                        <span class="ml-1 text-sm">Numbers</span>
-                                    </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" id="include-symbols" class="form-checkbox" checked>
-                                        <span class="ml-1 text-sm">Symbols</span>
-                                    </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" id="include-uppercase" class="form-checkbox" checked>
-                                        <span class="ml-1 text-sm">Uppercase</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col sm:flex-row mt-4 gap-2">
-                            <input type="text" id="generated-password" class="flex-1 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" value="${generatePassword()}" readonly>
-                            <button onclick="generateNewPassword()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded focus:outline-none focus:ring transition">
-                                <i class="fas fa-sync-alt mr-1"></i> Generate
-                            </button>
-                            <button onclick="copyToClipboard('generated-password')" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring transition copy-tooltip">
-                                <i class="fas fa-copy mr-1"></i> Copy
-                                <span class="tooltip-text">Copied!</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div class="p-4 bg-gray-50 border-b">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-lg font-semibold text-gray-700">Saved Passwords</h3>
-                                <div class="relative">
-                                    <input
-                                        type="text" 
-                                        id="search-passwords" 
-                                        placeholder="Search passwords..." 
-                                        class="border rounded py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                        oninput="searchPasswords(this.value)"
-                                    >
-                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <i class="fas fa-search text-gray-500"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr class="bg-gray-50 text-left">
-                                        <th class="py-3 px-4 text-sm font-medium text-gray-600 uppercase tracking-wider">Title</th>
-                                        <th class="py-3 px-4 text-sm font-medium text-gray-600 uppercase tracking-wider">Website</th>
-                                        <th class="py-3 px-4 text-sm font-medium text-gray-600 uppercase tracking-wider">Username</th>
-                                        <th class="py-3 px-4 text-sm font-medium text-gray-600 uppercase tracking-wider">Password</th>
-                                        <th class="py-3 px-4 text-sm font-medium text-gray-600 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="passwords-table-body">
-                                    ${renderPasswordRows(passwords)}
-                                </tbody>
-                            </table>
-                        </div>
-                        ${passwords.length === 0 ? `
-                        <div class="text-center py-8">
-                            <i class="fas fa-lock text-gray-300 text-5xl mb-3"></i>
-                            <p class="text-gray-500">No passwords saved yet. Add your first password to get started.</p>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-                
-                <!-- Add/Edit Password Modal -->
-                <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                    <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
-                        <button onclick="closeModal('password-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-4">Add Password</h3>
-                        <form id="password-form">
-                            <input type="hidden" id="password-id">
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-                                    Title
-                                </label>
-                                <input
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="title"
-                                    type="text"
-                                    placeholder="e.g. Gmail, Facebook"
-                                    required
-                                >
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="website">
-                                    Website URL
-                                </label>
-                                <input
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="website"
-                                    type="text"
-                                    placeholder="https://example.com"
-                                >
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                                    Username or Email
-                                </label>
-                                <input
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="username"
-                                    type="text"
-                                    placeholder="your_username"
-                                    required
-                                >
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="password-value">
-                                    Password
-                                </label>
-                                <div class="flex">
-                                    <div class="relative flex-grow">
-                                        <input
-                                            class="shadow appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                            id="password-value"
-                                            type="password"
-                                            placeholder="Enter password"
-                                            required
-                                        >
-                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="togglePasswordVisibility('password-value')">
-                                            <i class="fas fa-eye text-gray-500"></i>
-                                        </div>
-                                    </div>
-                                    <button type="button" onclick="useGeneratedPassword()" class="bg-gray-200 hover:bg-gray-300 rounded-r px-3 text-sm" title="Use generated password">
-                                        <i class="fas fa-magic"></i>
-                                    </button>
-                                </div>
-                                <div class="password-strength-meter mt-2">
-                                    <div id="form-password-strength" class="bg-gray-300" style="width: 0%"></div>
-                                </div>
-                                <p id="form-password-strength-text" class="text-xs text-gray-600 mt-1">Password strength: None</p>
-                            </div>
-                            <div class="mb-6">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="notes">
-                                    Notes (Optional)
-                                </label>
-                                <textarea
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                                    id="notes"
-                                    placeholder="Add any additional notes here"
-                                    rows="2"
-                                ></textarea>
-                            </div>
-                            <div class="flex justify-end">
-                                <button type="button" onclick="closeModal('password-modal')" class="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:ring transition">
-                                    Cancel
-                                </button>
-                                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring transition">
-                                    Save
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- Password Details Modal -->
-                <div id="view-password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                    <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
-                        <button onclick="closeModal('view-password-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <h3 id="details-title" class="text-xl font-bold text-gray-800 mb-4">Password Details</h3>
-                        <div class="mb-8">
-                            <div class="mb-4">
-                                <h4 class="text-sm font-semibold text-gray-600 mb-1">Website</h4>
-                                <div class="flex items-center">
-                                    <span id="details-website-icon" class="mr-2 w-4"></span>
-                                    <p id="details-website" class="text-gray-800"></p>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <h4 class="text-sm font-semibold text-gray-600 mb-1">Username</h4>
-                                <div class="flex items-center">
-                                    <p id="details-username" class="text-gray-800 flex-grow"></p>
-                                    <button onclick="copyFromDetails('username')" class="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <h4 class="text-sm font-semibold text-gray-600 mb-1">Password</h4>
-                                <div class="flex items-center">
-                                    <p id="details-password" class="text-gray-800 flex-grow">••••••••</p>
-                                    <button onclick="toggleDetailsPassword()" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                                        <i id="details-password-toggle" class="fas fa-eye"></i>
-                                    </button>
-                                    <button onclick="copyFromDetails('password')" class="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="details-notes-container" class="mb-4">
-                                <h4 class="text-sm font-semibold text-gray-600 mb-1">Notes</h4>
-                                <p id="details-notes" class="text-gray-800 bg-gray-50 p-3 rounded"></p>
-                            </div>
-                            <div class="text-xs text-gray-500">
-                                <p>Created: <span id="details-created"></span></p>
-                                <p>Last Updated: <span id="details-updated"></span></p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between">
-                            <button onclick="preparePasswordDelete()" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded focus:outline-none focus:ring transition inline-flex items-center">
-                                <i class="fas fa-trash-alt mr-1"></i> Delete
-                            </button>
-                            <button onclick="showEditPasswordModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded focus:outline-none focus:ring transition inline-flex items-center">
-                                <i class="fas fa-edit mr-1"></i> Edit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Delete Confirmation Modal -->
-                <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                    <div class="bg-white rounded-lg w-full max-w-md p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Confirm Deletion</h3>
-                        <p class="text-gray-600 mb-6">Are you sure you want to delete this password? This action cannot be undone.</p>
-                        <div class="flex justify-end">
-                            <button onclick="closeModal('delete-modal')" class="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:ring transition">
-                                Cancel
-                            </button>
-                            <button onclick="deletePasswordConfirmed()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring transition">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        };
-        
-        // Helper functions for UI
-        const renderPasswordRows = (passwords) => {
-            if (passwords.length === 0) {
-                return '';
-            }
-            
-            return passwords.map(password => {
-                // Extract domain from website for favicon
-                let faviconUrl = '';
-                if (password.website) {
-                    try {
-                        const url = new URL(password.website.startsWith('http') ? password.website : `https://${password.website}`);
-                        faviconUrl = `https://www.google.com/s2/favicons?domain=${url.hostname}`;
-                    } catch (e) {
-                        faviconUrl = '';
-                    }
-                }
-                
-                return `
-                    <tr class="border-t hover:bg-gray-50 password-row" data-id="${password.id}">
-                        <td class="py-3 px-4">
-                            <div class="flex items-center">
-                                ${faviconUrl ? `<img src="${faviconUrl}" class="mr-2 w-4 h-4" alt="">` : ''}
-                                <span>${password.title}</span>
-                            </div>
-                        </td>
-                        <td class="py-3 px-4">
-                            ${password.website ? `<a href="${password.website.startsWith('http') ? password.website : `https://${password.website}`}" target="_blank" class="text-blue-600 hover:text-blue-800">${truncateText(password.website, 30)}</a>` : '-'}
-                        </td>
-                        <td class="py-3 px-4">${truncateText(password.username, 20)}</td>
-                        <td class="py-3 px-4">••••••••</td>
-                        <td class="py-3 px-4">
-                            <div class="flex space-x-2">
-                                <button onclick="showPasswordDetails('${password.id}')" class="text-blue-600 hover:text-blue-800" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button onclick="copyPassword('${password.id}', 'username')" class="text-gray-600 hover:text-gray-800" title="Copy Username">
-                                    <i class="fas fa-user-copy"></i>
-                                </button>
-                                <button onclick="copyPassword('${password.id}', 'password')" class="text-gray-600 hover:text-gray-800" title="Copy Password">
-                                    <i class="fas fa-key"></i>
-                                </button>
-                                <button onclick="showEditPasswordModal('${password.id}')" class="text-indigo-600 hover:text-indigo-800" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        };
-        
-        const truncateText = (text, maxLength) => {
-            if (!text) return '-';
-            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-        };
-        
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            return date.toLocaleString();
-        };
-        
-        // Page rendering functions
-        const renderLoginPage = () => {
-            const app = document.getElementById('app');
-            app.innerHTML = `
-                ${Navbar()}
-                <div class="min-h-screen bg-gradient-to-b from-indigo-100 to-white flex flex-col items-center justify-center px-4">
-                    <div class="text-center mb-8">
-                        <div class="inline-block p-4 bg-indigo-600 text-white rounded-full mb-4">
-                            <i class="fas fa-shield-alt text-4xl"></i>
-                        </div>
-                        <h1 class="text-3xl font-bold text-gray-800">SecureVault</h1>
-                        <p class="text-gray-600 mt-2">Your personal password manager</p>
-                    </div>
-                    ${LoginForm()}
-                </div>
-            `;
-            
-            // Set up demo account if it doesn't exist
-            setupDemoAccount();
-            
-            // Set up event listeners
-            document.getElementById('login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                const result = loginUser(email, password);
-                if (result.success) {
-                    Toast('Login successful!');
-                    renderDashboard();
-                } else {
-                    Toast(result.message, 'error');
-                }
-            });
-        };
-        
-        const renderSignupPage = () => {
-            const app = document.getElementById('app');
-            app.innerHTML = `
-                ${Navbar()}
-                <div class="min-h-screen bg-gradient-to-b from-indigo-100 to-white flex flex-col items-center justify-center px-4">
-                    <div class="text-center mb-8">
-                        <div class="inline-block p-4 bg-indigo-600 text-white rounded-full mb-4">
-                            <i class="fas fa-shield-alt text-4xl"></i>
-                        </div>
-                        <h1 class="text-3xl font-bold text-gray-800">SecureVault</h1>
-                        <p class="text-gray-600 mt-2">Create your secure vault</p>
-                    </div>
-                    ${SignupForm()}
-                </div>
-            `;
-            
-            // Set up event listeners
-            document.getElementById('signup-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const email = document.getElementById('signup-email').value;
-                const password = document.getElementById('master-password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-                
-                if (password !== confirmPassword) {
-                    Toast('Passwords do not match', 'error');
-                    return;
-                }
-                
-                const strength = calculatePasswordStrength(password);
-                if (strength.score < 4) {
-                    Toast('Please use a stronger password', 'error');
-                    return;
-                }
-                
-                const result = createUser(username, email, password);
-                if (result.success) {
-                    Toast('Account created successfully!');
-                    renderLoginPage();
-                } else {
-                    Toast(result.message, 'error');
-                }
-            });
-        };
-        
-        const renderDashboard = () => {
-            const user = getCurrentUser();
-            if (!user) {
-                renderLoginPage();
-                return;
-            }
-            
-            const passwords = getUserPasswords();
-            
-            const app = document.getElementById('app');
-            app.innerHTML = `
-                ${Navbar(user)}
-                ${Dashboard(passwords)}
-            `;
-            
-            // Set up event listeners
-            document.getElementById('password-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const id = document.getElementById('password-id').value;
-                const title = document.getElementById('title').value;
-                const website = document.getElementById('website').value;
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password-value').value;
-                const notes = document.getElementById('notes').value;
-                
-                let result;
-                if (id) {
-                    result = updatePassword(id, title, username, password, website, notes);
-                } else {
-                    result = savePassword(title, username, password, website, notes);
-                }
-                
-                if (result.success) {
-                    Toast(id ? 'Password updated successfully!' : 'Password saved successfully!');
-                    closeModal('password-modal');
-                    renderDashboard();
-                } else {
-                    Toast(result.message, 'error');
-                }
-            });
-            
-            // Add input listener for password field to update strength meter
-            document.getElementById('password-value').addEventListener('input', function() {
-                const password = this.value;
-                updatePasswordStrengthUI(password, 'form-password-strength', 'form-password-strength-text');
-            });
-        };
-        
-        // UI Interaction functions
-        const togglePasswordVisibility = (elementId) => {
-            const passwordInput = document.getElementById(elementId);
-            const eyeIcon = passwordInput.nextElementSibling.querySelector('i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
+        const featuredShowsContainer = document.getElementById("featured-shows-container");
+        function createMediaElement(show) {
+            let mediaElement;
+            if (show.type === "video") {
+                mediaElement = document.createElement("video");
+                mediaElement.src = show.src;
+                mediaElement.autoplay = true;
+                mediaElement.loop = true;
+                mediaElement.muted = true;
+                mediaElement.playsInline = true;
+                mediaElement.onerror = () => {
+                    console.error("Failed to load video:", show.src);
+                    mediaElement.src = "https://via.placeholder.com/300x170?text=Video+Error";
+                };
+            } else if (show.type === "image") {
+                mediaElement = document.createElement("img");
+                mediaElement.src = show.src;
+                mediaElement.alt = show.title + " Poster";
+                mediaElement.onerror = () => {
+                    console.error("Failed to load image:", show.src);
+                    mediaElement.src = "https://via.placeholder.com/300x170?text=Image+Error";
+                };
             } else {
-                passwordInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
+                mediaElement = document.createElement("img");
+                mediaElement.src = "https://via.placeholder.com/300x170?text=Media+Error";
+                mediaElement.alt = "Media Placeholder";
+                console.warn("Unknown media type. Displaying placeholder.");
             }
-        };
-        
-        const updatePasswordStrength = (inputId, strengthBarId) => {
-            const password = document.getElementById(inputId).value;
-            updatePasswordStrengthUI(password, strengthBarId, 'password-strength-text');
-        };
-        
-        const updatePasswordStrengthUI = (password, strengthBarId, textId) => {
-            const strengthBar = document.getElementById(strengthBarId);
-            const strengthText = document.getElementById(textId);
-            
-            const { score, message } = calculatePasswordStrength(password);
-            
-            // Update the strength bar
-            let width = '0%';
-            let color = 'bg-gray-300';
-            
-            if (score > 0) {
-                width = (score / 8) * 100 + '%';
-                if (score < 3) color = 'bg-red-500';
-                else if (score < 5) color = 'bg-yellow-500';
-                else if (score < 7) color = 'bg-blue-500';
-                else color = 'bg-green-500';
+            return mediaElement;
+        }
+        function createShowCard(show) {
+            const card = document.createElement("div");
+            card.className = "bg-gray-800 rounded-md overflow-hidden shadow-md";
+            const mediaContainer = document.createElement("div");
+            mediaContainer.className = "media-container";
+            const mediaElement = createMediaElement(show);
+            mediaContainer.appendChild(mediaElement);
+            const content = document.createElement("div");
+            content.className = "p-4 show-card-content";
+            const title = document.createElement("h3");
+            title.textContent = show.title;
+            title.className = "text-md font-semibold text-white";
+            const genre = document.createElement("p");
+            genre.textContent = `Genre: ${show.genre}`;
+            genre.className = "text-gray-400 text-sm";
+            content.appendChild(title);
+            content.appendChild(genre);
+            card.appendChild(mediaContainer);
+            card.appendChild(content);
+            return card;
+        }
+        function renderFeaturedShows(shows, container) {
+            if (!Array.isArray(shows)) {
+                throw new TypeError("Shows must be an array.");
             }
-            
-            strengthBar.style.width = width;
-            strengthBar.className = color;
-            strengthText.textContent = `Password strength: ${message}`;
-        };
-        
-        const showAddPasswordModal = () => {
-            document.getElementById('modal-title').textContent = 'Add Password';
-            document.getElementById('password-id').value = '';
-            document.getElementById('password-form').reset();
-            document.getElementById('password-modal').classList.remove('hidden');
-            document.getElementById('title').focus();
-            
-            // Reset strength meter
-            document.getElementById('form-password-strength').style.width = '0%';
-            document.getElementById('form-password-strength').className = 'bg-gray-300';
-            document.getElementById('form-password-strength-text').textContent = 'Password strength: None';
-        };
-        
-        const showEditPasswordModal = (id) => {
-            closeModal('view-password-modal');
-            
-            const passwords = getUserPasswords();
-            const password = passwords.find(p => p.id === id);
-            
-            if (!password) return;
-            
-            document.getElementById('modal-title').textContent = 'Edit Password';
-            document.getElementById('password-id').value = password.id;
-            document.getElementById('title').value = password.title;
-            document.getElementById('website').value = password.website || '';
-            document.getElementById('username').value = password.username;
-            document.getElementById('password-value').value = password.password;
-            document.getElementById('notes').value = password.notes || '';
-            
-            // Update strength meter
-            updatePasswordStrengthUI(
-                password.password, 
-                'form-password-strength', 
-                'form-password-strength-text'
-            );
-            
-            document.getElementById('password-modal').classList.remove('hidden');
-        };
-        
-        let currentPasswordId = null;
-        
-        const showPasswordDetails = (id) => {
-            const passwords = getUserPasswords();
-            const password = passwords.find(p => p.id === id);
-            
-            if (!password) return;
-            
-            currentPasswordId = id;
-            
-            // Set all the values
-            document.getElementById('details-title').textContent = password.title;
-            
-            // Website with favicon
-            let websiteHtml = password.website ? password.website : 'Not specified';
-            let faviconHtml = '';
-            
-            if (password.website) {
+            if (!(container instanceof HTMLElement)) {
+                throw new TypeError("Container must be an HTMLElement.");
+            }
+            container.innerHTML = "";
+            shows.forEach((show, index) => {
                 try {
-                    const url = new URL(password.website.startsWith('http') ? password.website : `https://${password.website}`);
-                    const faviconUrl = `https://www.google.com/s2/favicons?domain=${url.hostname}`;
-                    faviconHtml = `<img src="${faviconUrl}" class="w-4 h-4" alt="">`;
-                    websiteHtml = `<a href="${url.href}" target="_blank" class="text-blue-600 hover:underline">${password.website}</a>`;
-                } catch (e) {}
-            }
-            
-            document.getElementById('details-website-icon').innerHTML = faviconHtml;
-            document.getElementById('details-website').innerHTML = websiteHtml;
-            document.getElementById('details-username').textContent = password.username;
-            document.getElementById('details-password').textContent = '••••••••';
-            document.getElementById('details-password').dataset.value = password.password;
-            
-            // Handle notes - hide container if no notes
-            const notesContainer = document.getElementById('details-notes-container');
-            if (password.notes) {
-                notesContainer.classList.remove('hidden');
-                document.getElementById('details-notes').textContent = password.notes;
-            } else {
-                notesContainer.classList.add('hidden');
-            }
-            
-            document.getElementById('details-created').textContent = formatDate(password.createdAt);
-            document.getElementById('details-updated').textContent = formatDate(password.updatedAt);
-            
-            // Reset the password visibility
-            document.getElementById('details-password-toggle').className = 'fas fa-eye';
-            
-            // Show the modal
-            document.getElementById('view-password-modal').classList.remove('hidden');
-        };
-        
-        const toggleDetailsPassword = () => {
-            const passwordElement = document.getElementById('details-password');
-            const toggleIcon = document.getElementById('details-password-toggle');
-            
-            if (passwordElement.textContent === '••••••••') {
-                passwordElement.textContent = passwordElement.dataset.value;
-                toggleIcon.className = 'fas fa-eye-slash';
-            } else {
-                passwordElement.textContent = '••••••••';
-                toggleIcon.className = 'fas fa-eye';
-            }
-        };
-        
-        const copyFromDetails = (field) => {
-            let value = '';
-            if (field === 'username') {
-                value = document.getElementById('details-username').textContent;
-            } else if (field === 'password') {
-                value = document.getElementById('details-password').dataset.value;
-            }
-            
-            navigator.clipboard.writeText(value).then(() => {
-                Toast(`${field.charAt(0).toUpperCase() + field.slice(1)} copied to clipboard`);
-            });
-        };
-        
-        const copyPassword = (id, field) => {
-            const passwords = getUserPasswords();
-            const password = passwords.find(p => p.id === id);
-            
-            if (!password) return;
-            
-            let value = '';
-            if (field === 'username') {
-                value = password.username;
-            } else if (field === 'password') {
-                value = password.password;
-            }
-            
-            navigator.clipboard.writeText(value).then(() => {
-                Toast(`${field.charAt(0).toUpperCase() + field.slice(1)} copied to clipboard`);
-            });
-        };
-        
-        const copyToClipboard = (elementId) => {
-            const element = document.getElementById(elementId);
-            element.select();
-            document.execCommand('copy');
-            Toast('Copied to clipboard!');
-        };
-        
-        const preparePasswordDelete = () => {
-            closeModal('view-password-modal');
-            document.getElementById('delete-modal').classList.remove('hidden');
-        };
-        
-        const deletePasswordConfirmed = () => {
-            if (currentPasswordId) {
-                const result = deletePassword(currentPasswordId);
-                if (result.success) {
-                    Toast('Password deleted successfully!');
-                    closeModal('delete-modal');
-                    renderDashboard();
-                } else {
-                    Toast(result.message, 'error');
+                    const showCard = createShowCard(show);
+                    container.appendChild(showCard);
+                } catch (error) {
+                    console.error(`Error creating card for show at index ${index}:`, error, show);
+                    const errorCard = document.createElement("div");
+                    errorCard.className = "bg-red-800 text-white p-4 rounded-md";
+                    errorCard.textContent = `Error: Could not display show at index ${index}.`;
+                    container.appendChild(errorCard);
                 }
-            }
-        };
-        
-        const closeModal = (modalId) => {
-            document.getElementById(modalId).classList.add('hidden');
-        };
-        
-        const searchPasswords = (query) => {
-            if (!query) {
-                // If query is empty, refresh the dashboard to show all passwords
-                renderDashboard();
-                return;
-            }
-            
-            query = query.toLowerCase();
-            const passwords = getUserPasswords();
-            const filteredPasswords = passwords.filter(p => 
-                p.title.toLowerCase().includes(query) || 
-                p.username.toLowerCase().includes(query) || 
-                (p.website && p.website.toLowerCase().includes(query)) ||
-                (p.notes && p.notes.toLowerCase().includes(query))
-            );
-            
-            document.getElementById('passwords-table-body').innerHTML = renderPasswordRows(filteredPasswords);
-        };
-        
-        // Password generator functions
-        const generateNewPassword = () => {
-            const length = parseInt(document.getElementById('length-slider').value);
-            const hasNumbers = document.getElementById('include-numbers').checked;
-            const hasSymbols = document.getElementById('include-symbols').checked;
-            const hasUppercase = document.getElementById('include-uppercase').checked;
-            
-            const password = generatePassword(length, hasNumbers, hasSymbols, hasUppercase);
-            document.getElementById('generated-password').value = password;
-        };
-        
-        const updatePasswordLength = () => {
-            const length = document.getElementById('length-slider').value;
-            document.getElementById('length-value').textContent = length;
-            generateNewPassword();
-        };
-        
-        const useGeneratedPassword = () => {
-            const generatedPassword = document.getElementById('generated-password').value;
-            document.getElementById('password-value').value = generatedPassword;
-            updatePasswordStrengthUI(
-                generatedPassword, 
-                'form-password-strength', 
-                'form-password-strength-text'
-            );
-        };
-        
-        // Setup demo account
-        const setupDemoAccount = () => {
-            const users = JSON.parse(localStorage.getItem('users'));
-            const demoExists = users.some(u => u.email === 'demo@example.com');
-            
-            if (!demoExists) {
-                createUser('Demo User', 'demo@example.com', 'Demo@123');
-                
-                // Add some sample passwords for the demo account
-                const userId = JSON.parse(localStorage.getItem('users')).find(u => u.email === 'demo@example.com').id;
-                
-                const samplePasswords = [
+            });
+        }
+        window.addEventListener('load', () => {
+            try {
+                const featuredShowsData = [
                     {
-                        title: 'Gmail Account',
-                        username: 'demouser@gmail.com',
-                        password: 'StrongP@ss123!',
-                        website: 'https://gmail.com',
-                        notes: 'Work email account'
+                        title: "Show Title 1",
+                        genre: "Drama",
+                        type: "video",
+                        src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
                     },
                     {
-                        title: 'Facebook',
-                        username: 'demo.user',
-                        password: 'Fb@ccount789',
-                        website: 'https://facebook.com'
+                        title: "Show Title 2",
+                        genre: "Comedy",
+                        type: "image",
+                        src: "https://via.placeholder.com/300x170",
                     },
                     {
-                        title: 'Online Banking',
-                        username: 'demo_user',
-                        password: 'B@nking#Secure456!',
-                        website: 'https://mybank.com',
-                        notes: 'Personal checking account'
-                    }
+                        title: "Show Title 3",
+                        genre: "Action",
+                        type: "video",
+                        src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+                    },
+                    {
+                        title: "Show Title 4",
+                        genre: "Sci-Fi",
+                        type: "image",
+                        src: "https://via.placeholder.com/300x170",
+                    },
+                    {
+                        title: "Show Title 5",
+                        genre: "Horror",
+                        type: "image",
+                        src: "https://via.placeholder.com/300x170",
+                    },
+                    {
+                        title: "Show Title 6",
+                        genre: "Thriller",
+                        type: "video",
+                        src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+                    },
+                    {
+                        title: "Show Title 7",
+                        genre: "Romance",
+                        type: "image",
+                        src: "https://via.placeholder.com/300x170",
+                    },
+                    {
+                        title: "Show Title 8",
+                        genre: "Documentary",
+                        type: "image",
+                        src: "https://via.placeholder.com/300x170",
+                    },
                 ];
-                
-                const encryptionKey = 'Demo@123';
-                const passwords = JSON.parse(localStorage.getItem('passwords'));
-                
-                samplePasswords.forEach(p => {
-                    passwords.push({
-                        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-                        userId: userId,
-                        title: p.title,
-                        username: encrypt(p.username, encryptionKey),
-                        password: encrypt(p.password, encryptionKey),
-                        website: p.website,
-                        notes: p.notes ? encrypt(p.notes, encryptionKey) : "",
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
-                    });
-                });
-                
-                localStorage.setItem('passwords', JSON.stringify(passwords));
+                if (!featuredShowsData) {
+                    throw new Error("Featured shows data is not defined.");
+                }
+                renderFeaturedShows(featuredShowsData, featuredShowsContainer);
+            } catch (error) {
+                console.error("Failed to initialize featured shows:", error);
+                const errorMessage = document.createElement("p");
+                errorMessage.className = "error-message";
+                errorMessage.textContent = "Sorry, we could not load the featured shows.";
+                featuredShowsContainer.parentElement.insertBefore(errorMessage, featuredShowsContainer);
             }
-        };
-        
-        // Initialize app
-        window.onload = function() {
-            initDB();
-            const currentUser = getCurrentUser();
-            if (currentUser) {
-                renderDashboard();
-            } else {
-                renderLoginPage();
-            }
-            
-            // Expose functions to window for HTML event handlers
-            window.togglePasswordVisibility = togglePasswordVisibility;
-            window.updatePasswordStrength = updatePasswordStrength;
-            window.showAddPasswordModal = showAddPasswordModal;
-            window.showEditPasswordModal = showEditPasswordModal;
-            window.closeModal = closeModal;
-            window.copyToClipboard = copyToClipboard;
-            window.generateNewPassword = generateNewPassword;
-            window.updatePasswordLength = updatePasswordLength;
-            window.useGeneratedPassword = useGeneratedPassword;
-            window.showPasswordDetails = showPasswordDetails;
-            window.toggleDetailsPassword = toggleDetailsPassword;
-            window.copyFromDetails = copyFromDetails;
-            window.copyPassword = copyPassword;
-            window.preparePasswordDelete = preparePasswordDelete;
-            window.deletePasswordConfirmed = deletePasswordConfirmed;
-            window.searchPasswords = searchPasswords;
-            window.renderLoginPage = renderLoginPage;
-            window.renderSignupPage = renderSignupPage;
-            window.logoutUser = logoutUser;
-        };
+        });
     </script>
 </body>
 </html>
+
