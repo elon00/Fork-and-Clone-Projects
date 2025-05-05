@@ -1,166 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Spotify Clone</title>
+<style>
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Spotify Circular', 'Arial', sans-serif;
+    background: #121212;
+    color: #fff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    border-radius: 25px;
+    font-weight: 700;
+    padding: 0.75em 2em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Navbar */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(18,18,18,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    max-height: 60px;
+  }
+  .logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #1db954;
+    letter-spacing: -1.5px;
+  }
+  nav a {
+    margin-left: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #b3b3b3;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    color: #1db954;
+  }
+
+  /* Hero section */
+  .hero {
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 20px;
+    background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
+    background: linear-gradient(135deg, #1db954 30%, #191414 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-content {
+    max-width: 400px;
+    z-index: 2;
+  }
+  .hero h1 {
+    font-size: 3.2rem;
+    line-height: 1.1;
+    margin-bottom: 0.5em;
+    font-weight: 900;
+  }
+  .hero p {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 1.5em;
+    color: #b3b3b3;
+  }
+  .button-primary {
+    background-color: #1db954;
+    color: #fff;
+    box-shadow: 0 8px 15px rgba(29, 185, 84, 0.4);
+  }
+  .button-primary:hover, .button-primary:focus {
+    background-color: #17a34a;
+    box-shadow: 0 12px 25px rgba(23, 163, 74, 0.75);
+  }
+
+  /* Animated dynamic text */
+  .dynamic-text {
+    color: #fff;
+    font-weight: 800;
+    font-size: 2rem;
+    display: inline-block;
+    border-right: 0.2em solid #1db954;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 0;
+    animation: typing 3s steps(20) forwards, blink 0.75s step-end infinite;
+  }
+  @keyframes typing {
+    from { max-width: 0; }
+    to { max-width: 100%; }
+  }
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+
+  /* Features section */
+  .features {
+    background: #191414;
+    padding: 60px 20px 40px;
+    text-align: center;
+  }
+  .features h2 {
+    font-weight: 900;
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  .feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .feature-card {
+    background: #282828;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgb(0 0 0 / 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .feature-card:hover, .feature-card:focus-within {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(29, 185, 84, 0.7);
+  }
+  .feature-card h3 {
+    margin-top: 0;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #1db954;
+    margin-bottom: 0.75em;
+  }
+  .feature-card p {
+    color: #b3b3b3;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  /* Footer */
+  footer {
+    background: #121212;
+    padding: 20px 10px;
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+    nav a {
+      margin-left: 10px;
+      font-size: 0.85rem;
+    }
+    .feature-cards {
+      grid-template-columns: 1fr;
+      max-width: 90vw;
+    }
+  }
+</style>
 </head>
 <body>
-    
-</body><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React Todo App</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.17.11/babel.min.js"></script>
-    <style>
-        body {
-            background-color: #f3f4f6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .task-list {
-            max-height: none;
-        }
-        @media print {
-            body {
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                background-color: white;
-            }
-            .app-container {
-                box-shadow: none;
-                margin: 0;
-                padding: 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div id="root" class="min-h-screen flex items-center justify-center p-4"></div>
+<header role="banner">
+  <div class="logo" aria-label="Spotify logo">Spotify</div>
+  <nav role="navigation" aria-label="Main navigation">
+    <a href="#" tabindex="0">Premium</a>
+    <a href="#" tabindex="0">Support</a>
+    <a href="#" tabindex="0">Download</a>
+    <a href="#" tabindex="0">Sign Up</a>
+    <a href="#" tabindex="0">Log In</a>
+  </nav>
+</header>
+<main>
+  <section class="hero" role="main" aria-label="Spotify promotional section">
+    <div class="hero-content">
+      <h1>Music for everyone.</h1>
+      <p>Millions of songs. No credit card needed.</p>
+      <button class="button-primary" id="play-btn" aria-label="Get Spotify Free">Get Spotify Free</button>
+    </div>
+  </section>
 
-    <script type="text/babel">
-        // Icons implementation since we can't import directly from react-icons
-        const FaTrash = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" width="1em" height="1em">
-                <path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" />
-            </svg>
-        );
+  <section class="features" aria-label="Features of Spotify">
+    <h2>Why Spotify?</h2>
+    <div class="feature-cards">
+      <article class="feature-card" tabindex="0" aria-labelledby="feature1-title" aria-describedby="feature1-desc">
+        <h3 id="feature1-title">Discover New Music</h3>
+        <p id="feature1-desc">Get personalized recommendations and playlists just for you.</p>
+      </article>
+      <article class="feature-card" tabindex="0" aria-labelledby="feature2-title" aria-describedby="feature2-desc">
+        <h3 id="feature2-title">Play Anywhere</h3>
+        <p id="feature2-desc">Listen on your phone, desktop, tablet, and speakers.</p>
+      </article>
+      <article class="feature-card" tabindex="0" aria-labelledby="feature3-title" aria-describedby="feature3-desc">
+        <h3 id="feature3-title">Stay Connected</h3>
+        <p id="feature3-desc">Share playlists and music with friends and family.</p>
+      </article>
+    </div>
+  </section>
+</main>
+<footer>
+  &copy; 2024 Spotify Clone. Made with ♫.
+</footer>
 
-        const FaCheck = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="1em" height="1em">
-                <path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" />
-            </svg>
-        );
+<script>
+  // Dynamic text typing effect on hero heading
+  const heroHeading = document.querySelector('.hero h1');
 
-        function TodoApp() {
-            const [tasks, setTasks] = React.useState(() => {
-                const savedTasks = localStorage.getItem("tasks");
-                return savedTasks ? JSON.parse(savedTasks) : [];
+  // Array of messages to cycle through below main headline
+  const featureMessages = [
+    "Play what you love.",
+    "Discover new artists.",
+    "Make your playlists.",
+    "Listen offline."
+  ];
+  let messageIndex = 0;
+
+  // Create a span for dynamic message
+  const dynamicSpan = document.createElement('span');
+  dynamicSpan.style.color = '#1db954';
+  dynamicSpan.style.fontWeight = '900';
+  dynamicSpan.style.display = 'block';
+  dynamicSpan.style.marginTop = '0.4em';
+  dynamicSpan.style.fontSize = '1.8rem';
+  dynamicSpan.style.overflow = 'hidden';
+  dynamicSpan.style.whiteSpace = 'nowrap';
+  dynamicSpan.style.borderRight = '0.15em solid #1db954';
+  heroHeading.after(dynamicSpan);
+
+  function typeMessage(text, callback) {
+    dynamicSpan.textContent = '';
+    let i = 0;
+    dynamicSpan.style.borderRightColor = '#1db954';
+
+    function typing() {
+      if (i < text.length) {
+        dynamicSpan.textContent += text[i];
+        i++;
+        setTimeout(typing, 100);
+      } else {
+        setTimeout(() => {
+          dynamicSpan.style.borderRightColor = 'transparent';
+          if(callback) callback();
+        }, 1500);
+      }
+    }
+    typing();
+  }
+
+  function loopMessages() {
+    typeMessage(featureMessages[messageIndex], () => {
+      // erase
+      let j = featureMessages[messageIndex].length;
+      dynamicSpan.style.borderRightColor = '#1db954';
+
+      function erase() {
+        if (j > 0) {
+          dynamicSpan.textContent = dynamicSpan.textContent.slice(0, -1);
+          j--;
+          setTimeout(erase, 50);
+        } else {
+          messageIndex = (messageIndex + 1) % featureMessages.length;
+          setTimeout(() => {
+            typeMessage(featureMessages[messageIndex], () => {
+              setTimeout(loopMessages, 2000);
             });
-
-            const [task, setTask] = React.useState("");
-
-            React.useEffect(() => {
-                localStorage.setItem("tasks", JSON.stringify(tasks));
-            }, [tasks]);
-
-            const addTask = () => {
-                if (task.trim() === "") return;
-                setTasks([...tasks, { text: task, completed: false }]);
-                setTask("");
-            };
-
-            const handleKeyPress = (event) => {
-                if (event.key === 'Enter') {
-                    addTask();
-                }
-            };
-
-            const deleteTask = (index) => {
-                setTasks(tasks.filter((_, i) => i !== index));
-            };
-
-            const toggleComplete = (index) => {
-                setTasks(
-                    tasks.map((t, i) =>
-                        i === index ? { ...t, completed: !t.completed } : t
-                    )
-                );
-            };
-
-            return (
-                <div className="max-w-md w-full mx-auto bg-white shadow-lg rounded-lg p-6 app-container">
-                    <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Todo List</h1>
-                    
-                    <div className="flex gap-2 mb-6">
-                        <input
-                            type="text"
-                            value={task}
-                            onChange={(e) => setTask(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter a task..."
-                        />
-                        <button 
-                            onClick={addTask} 
-                            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200">
-                            Add
-                        </button>
-                    </div>
-                    
-                    <div className="task-list">
-                        {tasks.length === 0 ? (
-                            <p className="text-gray-500 text-center py-4">No tasks yet. Add one above!</p>
-                        ) : (
-                            <ul className="space-y-3">
-                                {tasks.map((t, index) => (
-                                    <li key={index} className={`flex justify-between items-center p-4 rounded-lg border ${t.completed ? 'bg-gray-50' : 'bg-white'}`}>
-                                        <span className={`${t.completed ? "line-through text-gray-400" : "text-gray-800"} break-words flex-grow`}>
-                                            {t.text}
-                                        </span>
-                                        <div className="flex gap-3 ml-4">
-                                            <button 
-                                                onClick={() => toggleComplete(index)} 
-                                                className={`${t.completed ? 'text-green-600' : 'text-gray-400'} hover:text-green-700 p-2`}
-                                                title={t.completed ? "Mark as incomplete" : "Mark as complete"}>
-                                                <FaCheck />
-                                            </button>
-                                            <button 
-                                                onClick={() => deleteTask(index)} 
-                                                className="text-gray-400 hover:text-red-600 p-2"
-                                                title="Delete task">
-                                                <FaTrash />
-                                            </button>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                    
-                    <div className="mt-6 text-center text-sm text-gray-500">
-                        <p>{tasks.filter(t => t.completed).length} of {tasks.length} tasks completed</p>
-                    </div>
-                </div>
-            );
+          }, 500);
         }
+      }
+      setTimeout(erase, 1500)
+    });
+  }
 
-        function App() {
-            return (
-                <div className="min-h-screen flex items-center justify-center bg-gray-100 py-8">
-                    <TodoApp />
-                </div>
-            );
-        }
+  // Start looping the messages
+  loopMessages();
 
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
+  // Button click effect
+  const playBtn = document.getElementById('play-btn');
+  playBtn.addEventListener('click', () => {
+    alert('Get Spotify Free clicked! Feature not implemented in this clone.');
+  });
+
+  // Fade-in animation on scroll for feature cards
+  const featureCards = document.querySelectorAll('.feature-card');
+
+  function onScrollFadeIn() {
+    const scrollY = window.scrollY;
+    const windowH = window.innerHeight;
+    featureCards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      if(rect.top < windowH - 100) {
+        card.style.opacity = 1;
+        card.style.transform = 'translateY(0)';
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScrollFadeIn);
+
+  // Initial styles for fade-in
+  featureCards.forEach(card => {
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(25px)';
+    card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+  });
+
+  // Trigger at load
+  window.onload = onScrollFadeIn;
+</script>
 </body>
 </html>
-
-</html><script></script>
