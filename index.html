@@ -4,1065 +4,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head><!DOCTYPE html>
+</head>
+<body>
+    
+</body><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkHub - Your Personal Link Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>React Todo App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.17.11/babel.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+        .task-list {
+            max-height: none;
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        
-        .link-card {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .link-card:hover {
-            transform: translateY(-2px);
-            border-color: #8b5cf6;
-        }
-        
-        .theme-preview {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .theme-preview:hover {
-            transform: scale(1.05);
-        }
-        
-        .theme-preview.active {
-            border: 2px solid #8b5cf6;
-        }
-        
-        .toast {
-            transition: all 0.3s ease;
-            transform: translateY(100px);
-            opacity: 0;
-        }
-        
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
+        @media print {
+            body {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: white;
             }
-            50% {
-                opacity: .7;
+            .app-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 20px;
             }
-        }
-        
-        .animate-bounce {
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        .modal {
-            transition: opacity 0.3s ease;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        
-        .modal-content {
-            transition: transform 0.3s ease;
-        }
-        
-        .modal.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .modal.hidden .modal-content {
-            transform: translateY(-50px);
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #c7d2fe;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8b5cf6;
-        }
-        
-        /* Theme styles */
-        .theme-minimal .link-card {
-            background-color: white;
-            border-radius: 8px;
-        }
-        
-        .theme-colorful .link-card {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            border-radius: 8px;
-        }
-        
-        .theme-rounded .link-card {
-            background-color: white;
-            border-radius: 50px;
-        }
-        
-        .theme-outline .link-card {
-            background-color: transparent;
-            border: 2px solid #8b5cf6;
-            border-radius: 8px;
-        }
-        
-        .theme-shadow .link-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <a href="#" class="flex items-center">
-                    <div class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-                        LinkHub
-                    </div>
-                </a>
-                <div class="hidden md:flex space-x-6">
-                    <a href="#features" class="text-gray-700 hover:text-indigo-600 font-medium">Features</a>
-                    <a href="#themes" class="text-gray-700 hover:text-indigo-600 font-medium">Themes</a>
-                    <a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Pricing</a>
-                    <a href="#faq" class="text-gray-700 hover:text-indigo-600 font-medium">FAQ</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button id="loginBtn" class="hidden md:block border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Log In</button>
-                    <button id="signupBtn" class="hidden md:block btn-primary text-white px-4 py-2 rounded-lg text-sm font-medium">Sign Up Free</button>
-                    <button class="md:hidden text-gray-700" id="mobileMenuBtn">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="md:hidden hidden pt-4 pb-2 border-t mt-3">
-                <div class="flex flex-col space-y-3">
-                    <a href="#features" class="text-gray-700 hover:text-indigo-600 font-medium">Features</a>
-                    <a href="#themes" class="text-gray-700 hover:text-indigo-600 font-medium">Themes</a>
-                    <a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Pricing</a>
-                    <a href="#faq" class="text-gray-700 hover:text-indigo-600 font-medium">FAQ</a>
-                    <div class="flex space-x-4 pt-2">
-                        <button class="border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 w-1/2">Log In</button>
-                        <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm font-medium w-1/2">Sign Up Free</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div id="root" class="min-h-screen flex items-center justify-center p-4"></div>
 
-    <!-- Hero Section -->
-    <section class="py-16 md:py-24">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900">One link to share all your content</h1>
-                    <p class="text-lg md:text-xl mb-8 text-gray-600">Create a customizable page that houses all the important links you want to share. Perfect for social media profiles, creators, and businesses.</p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <button class="btn-primary text-white font-medium px-6 py-3 rounded-lg">Get Started for Free</button>
-                        <button class="border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-lg hover:bg-gray-50">See Examples</button>
+    <script type="text/babel">
+        // Icons implementation since we can't import directly from react-icons
+        const FaTrash = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" width="1em" height="1em">
+                <path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" />
+            </svg>
+        );
+
+        const FaCheck = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="1em" height="1em">
+                <path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" />
+            </svg>
+        );
+
+        function TodoApp() {
+            const [tasks, setTasks] = React.useState(() => {
+                const savedTasks = localStorage.getItem("tasks");
+                return savedTasks ? JSON.parse(savedTasks) : [];
+            });
+
+            const [task, setTask] = React.useState("");
+
+            React.useEffect(() => {
+                localStorage.setItem("tasks", JSON.stringify(tasks));
+            }, [tasks]);
+
+            const addTask = () => {
+                if (task.trim() === "") return;
+                setTasks([...tasks, { text: task, completed: false }]);
+                setTask("");
+            };
+
+            const handleKeyPress = (event) => {
+                if (event.key === 'Enter') {
+                    addTask();
+                }
+            };
+
+            const deleteTask = (index) => {
+                setTasks(tasks.filter((_, i) => i !== index));
+            };
+
+            const toggleComplete = (index) => {
+                setTasks(
+                    tasks.map((t, i) =>
+                        i === index ? { ...t, completed: !t.completed } : t
+                    )
+                );
+            };
+
+            return (
+                <div className="max-w-md w-full mx-auto bg-white shadow-lg rounded-lg p-6 app-container">
+                    <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Todo List</h1>
+                    
+                    <div className="flex gap-2 mb-6">
+                        <input
+                            type="text"
+                            value={task}
+                            onChange={(e) => setTask(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter a task..."
+                        />
+                        <button 
+                            onClick={addTask} 
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200">
+                            Add
+                        </button>
                     </div>
-                </div>
-                <div class="md:w-1/2 md:pl-10">
-                    <div class="relative">
-                        <!-- Phone mockup -->
-                        <div class="mx-auto w-72 h-[580px] bg-black rounded-[40px] p-3 shadow-xl">
-                            <div class="w-full h-full bg-white rounded-[32px] overflow-hidden relative">
-                                <!-- Notch -->
-                                <div class="absolute top-0 inset-x-0 h-6 bg-black rounded-b-xl w-40 mx-auto"></div>
-                                
-                                <!-- Preview content -->
-                                <div class="pt-8 px-4 h-full overflow-y-auto" id="phonePreview">
-                                    <!-- Profile section -->
-                                    <div class="flex flex-col items-center mb-6">
-                                        <div class="w-24 h-24 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold mb-3">
-                                            JS
+                    
+                    <div className="task-list">
+                        {tasks.length === 0 ? (
+                            <p className="text-gray-500 text-center py-4">No tasks yet. Add one above!</p>
+                        ) : (
+                            <ul className="space-y-3">
+                                {tasks.map((t, index) => (
+                                    <li key={index} className={`flex justify-between items-center p-4 rounded-lg border ${t.completed ? 'bg-gray-50' : 'bg-white'}`}>
+                                        <span className={`${t.completed ? "line-through text-gray-400" : "text-gray-800"} break-words flex-grow`}>
+                                            {t.text}
+                                        </span>
+                                        <div className="flex gap-3 ml-4">
+                                            <button 
+                                                onClick={() => toggleComplete(index)} 
+                                                className={`${t.completed ? 'text-green-600' : 'text-gray-400'} hover:text-green-700 p-2`}
+                                                title={t.completed ? "Mark as incomplete" : "Mark as complete"}>
+                                                <FaCheck />
+                                            </button>
+                                            <button 
+                                                onClick={() => deleteTask(index)} 
+                                                className="text-gray-400 hover:text-red-600 p-2"
+                                                title="Delete task">
+                                                <FaTrash />
+                                            </button>
                                         </div>
-                                        <h2 class="text-xl font-bold">Jane Smith</h2>
-                                        <p class="text-gray-600 text-sm">Digital Creator & Designer</p>
-                                    </div>
-                                    
-                                    <!-- Links section -->
-                                    <div class="space-y-3" id="previewLinks">
-                                        <a href="#" class="link-card block p-3 bg-white rounded-lg shadow-sm text-center hover:shadow-md">
-                                            <span class="font-medium">My Portfolio Website</span>
-                                        </a>
-                                        <a href="#" class="link-card block p-3 bg-white rounded-lg shadow-sm text-center hover:shadow-md">
-                                            <span class="font-medium">Latest YouTube Video</span>
-                                        </a>
-                                        <a href="#" class="link-card block p-3 bg-white rounded-lg shadow-sm text-center hover:shadow-md">
-                                            <span class="font-medium">Design Resources</span>
-                                        </a>
-                                        <a href="#" class="link-card block p-3 bg-white rounded-lg shadow-sm text-center hover:shadow-md">
-                                            <span class="font-medium">Join My Newsletter</span>
-                                        </a>
-                                        <a href="#" class="link-card block p-3 bg-white rounded-lg shadow-sm text-center hover:shadow-md">
-                                            <span class="font-medium">Book a Consultation</span>
-                                        </a>
-                                    </div>
-                                    
-                                    <!-- Social icons -->
-                                    <div class="flex justify-center space-x-4 mt-6 mb-8">
-                                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200">
-                                            <i class="fab fa-twitter"></i>
-                                        </a>
-                                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200">
-                                            <i class="fab fa-instagram"></i>
-                                        </a>
-                                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200">
-                                            <i class="fab fa-youtube"></i>
-                                        </a>
-                                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200">
-                                            <i class="fab fa-linkedin"></i>
-                                        </a>
-                                    </div>
-                                    
-                                    <!-- Powered by -->
-                                    <div class="text-center text-xs text-gray-400 mb-4">
-                                        Powered by LinkHub
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Decorative Element -->
-                        <div class="absolute -bottom-4 -right-4 bg-gradient-to-r from-indigo-600 to-purple-600 p-4 rounded-lg shadow-lg transform rotate-6 hidden md:block">
-                            <div class="flex items-center space-x-3 text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd" />
-                                </svg>
-                                <span>100K+ users worldwide</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Everything You Need in One Link</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Powerful features to help you share your content and grow your audience.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Unlimited Links</h3>
-                    <p class="text-gray-600">Add as many links as you need to your page. Organize and prioritize them however you want.</p>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Custom Themes</h3>
-                    <p class="text-gray-600">Personalize your page with custom colors, fonts, and layouts to match your brand identity.</p>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Analytics</h3>
-                    <p class="text-gray-600">Track clicks, views, and engagement to understand what content resonates with your audience.</p>
-                </div>
-                
-                <!-- Feature 4 -->
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Mobile Optimized</h3>
-                    <p class="text-gray-600">Your page looks great on any device, ensuring a seamless experience for all visitors.</p>
-                </div>
-                
-                <!-- Feature 5 -->
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Custom Domain</h3>
-                    <p class="text-gray-600">Use your own domain name for a more professional and branded experience.</p>
-                </div>
-                
-                <!-- Feature 6 -->
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Easy Management</h3>
-                    <p class="text-gray-600">Add, edit, and rearrange your links with our intuitive drag-and-drop interface.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Themes Section -->
-    <section id="themes" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Beautiful Themes for Your Page</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Choose from our collection of professionally designed themes or create your own.</p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-6 mb-10">
-                <!-- Theme 1 -->
-                <div class="theme-preview w-64 h-96 bg-white rounded-xl shadow-md overflow-hidden active" data-theme="minimal" onclick="changeTheme('minimal')">
-                    <div class="h-full p-4 flex flex-col">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold">
-                                A
-                            </div>
-                        </div>
-                        <div class="text-center mb-4">
-                            <h3 class="font-bold">Minimal</h3>
-                            <p class="text-xs text-gray-500">Clean and simple</p>
-                        </div>
-                        <div class="space-y-2 flex-grow">
-                            <div class="bg-white border border-gray-200 rounded-lg p-2 text-center text-sm">Link 1</div>
-                            <div class="bg-white border border-gray-200 rounded-lg p-2 text-center text-sm">Link 2</div>
-                            <div class="bg-white border border-gray-200 rounded-lg p-2 text-center text-sm">Link 3</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Theme 2 -->
-                <div class="theme-preview w-64 h-96 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-xl shadow-md overflow-hidden" data-theme="colorful" onclick="changeTheme('colorful')">
-                    <div class="h-full p-4 flex flex-col">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-indigo-600 font-bold">
-                                A
-                            </div>
-                        </div>
-                        <div class="text-center mb-4">
-                            <h3 class="font-bold text-white">Colorful</h3>
-                            <p class="text-xs text-indigo-100">Bold and vibrant</p>
-                        </div>
-                        <div class="space-y-2 flex-grow">
-                            <div class="bg-indigo-600 text-white rounded-lg p-2 text-center text-sm">Link 1</div>
-                            <div class="bg-indigo-600 text-white rounded-lg p-2 text-center text-sm">Link 2</div>
-                            <div class="bg-indigo-600 text-white rounded-lg p-2 text-center text-sm">Link 3</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Theme 3 -->
-                <div class="theme-preview w-64 h-96 bg-white rounded-xl shadow-md overflow-hidden" data-theme="rounded" onclick="changeTheme('rounded')">
-                    <div class="h-full p-4 flex flex-col">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold">
-                                A
-                            </div>
-                        </div>
-                        <div class="text-center mb-4">
-                            <h3 class="font-bold">Rounded</h3>
-                            <p class="text-xs text-gray-500">Soft and friendly</p>
-                        </div>
-                        <div class="space-y-2 flex-grow">
-                            <div class="bg-white border border-gray-200 rounded-full p-2 text-center text-sm">Link 1</div>
-                            <div class="bg-white border border-gray-200 rounded-full p-2 text-center text-sm">Link 2</div>
-                            <div class="bg-white border border-gray-200 rounded-full p-2 text-center text-sm">Link 3</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Theme 4 -->
-                <div class="theme-preview w-64 h-96 bg-white rounded-xl shadow-md overflow-hidden" data-theme="outline" onclick="changeTheme('outline')">
-                    <div class="h-full p-4 flex flex-col">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-16 h-16 rounded-full border-2 border-indigo-500 flex items-center justify-center text-indigo-500 font-bold">
-                                A
-                            </div>
-                        </div>
-                        <div class="text-center mb-4">
-                            <h3 class="font-bold">Outline</h3>
-                            <p class="text-xs text-gray-500">Elegant and minimal</p>
-                        </div>
-                        <div class="space-y-2 flex-grow">
-                            <div class="bg-transparent border-2 border-indigo-500 rounded-lg p-2 text-center text-sm">Link 1</div>
-                            <div class="bg-transparent border-2 border-indigo-500 rounded-lg p-2 text-center text-sm">Link 2</div>
-                            <div class="bg-transparent border-2 border-indigo-500 rounded-lg p-2 text-center text-sm">Link 3</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Theme 5 -->
-                <div class="theme-preview w-64 h-96 bg-white rounded-xl shadow-md overflow-hidden" data-theme="shadow" onclick="changeTheme('shadow')">
-                    <div class="h-full p-4 flex flex-col">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-16 h-16 rounded-full bg-indigo-500 shadow-lg flex items-center justify-center text-white font-bold">
-                                A
-                            </div>
-                        </div>
-                        <div class="text-center mb-4">
-                            <h3 class="font-bold">Shadow</h3>
-                            <p class="text-xs text-gray-500">Modern and sleek</p>
-                        </div>
-                        <div class="space-y-2 flex-grow">
-                            <div class="bg-white shadow-md rounded-lg p-2 text-center text-sm">Link 1</div>
-                            <div class="bg-white shadow-md rounded-lg p-2 text-center text-sm">Link 2</div>
-                            <div class="bg-white shadow-md rounded-lg p-2 text-center text-sm">Link 3</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center">
-                <button class="btn-primary text-white font-medium px-6 py-3 rounded-lg">Create Your Custom Theme</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dashboard Preview Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Easy to Manage</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Our intuitive dashboard makes it simple to create and manage your links.</p>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
-                <div class="border-b border-gray-200">
-                    <div class="flex overflow-x-auto">
-                        <button class="px-6 py-4 text-sm font-medium text-indigo-600 border-b-2 border-indigo-600">Links</button>
-                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Appearance</button>
-                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Analytics</button>
-                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Settings</button>
-                    </div>
-                </div>
-                
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-medium">Your Links</h3>
-                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
-                            <i class="fas fa-plus mr-2"></i> Add New Link
-                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                     
-                    <div class="space-y-4">
-                        <!-- Link Item 1 -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                                        <i class="fas fa-globe text-indigo-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">My Portfolio Website</h4>
-                                        <p class="text-sm text-gray-500">https://myportfolio.com</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm text-gray-500">245 clicks</span>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-grip-lines"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-600">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Link Item 2 -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center mr-3">
-                                        <i class="fab fa-youtube text-red-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Latest YouTube Video</h4>
-                                        <p class="text-sm text-gray-500">https://youtube.com/watch?v=abc123</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm text-gray-500">189 clicks</span>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-grip-lines"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-600">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Link Item 3 -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
-                                        <i class="fas fa-file-alt text-blue-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Design Resources</h4>
-                                        <p class="text-sm text-gray-500">https://gumroad.com/mydesignresources</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm text-gray-500">156 clicks</span>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-grip-lines"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-600">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Link Item 4 -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center mr-3">
-                                        <i class="fas fa-envelope text-green-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Join My Newsletter</h4>
-                                        <p class="text-sm text-gray-500">https://newsletter.mysite.com/signup</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm text-gray-500">98 clicks</span>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-grip-lines"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-600">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Link Item 5 -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mr-3">
-                                        <i class="fas fa-calendar-alt text-purple-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Book a Consultation</h4>
-                                        <p class="text-sm text-gray-500">https://calendly.com/myconsultation</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm text-gray-500">76 clicks</span>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-grip-lines"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-600">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <div className="mt-6 text-center text-sm text-gray-500">
+                        <p>{tasks.filter(t => t.completed).length} of {tasks.length} tasks completed</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            );
+        }
 
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Choose the plan that fits your needs. No hidden fees or surprises.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Free Plan -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Free</h3>
-                        <div class="flex items-baseline mb-4">
-                            <span class="text-3xl font-bold">$0</span>
-                            <span class="text-gray-600 ml-1">/ month</span>
-                        </div>
-                        <p class="text-gray-600 mb-6">Perfect for individuals just getting started.</p>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Up to 5 links</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Basic analytics</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Standard themes</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">LinkHub subdomain</span>
-                            </li>
-                        </ul>
-                        <button class="w-full border border-indigo-600 text-indigo-600 font-medium py-2 rounded-lg hover:bg-indigo-50 transition">Get Started</button>
-                    </div>
+        function App() {
+            return (
+                <div className="min-h-screen flex items-center justify-center bg-gray-100 py-8">
+                    <TodoApp />
                 </div>
-                
-                <!-- Pro Plan -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-indigo-500 transform scale-105 z-10">
-                    <div class="bg-indigo-500 text-white text-center py-2 text-sm font-medium">MOST POPULAR</div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Pro</h3>
-                        <div class="flex items-baseline mb-4">
-                            <span class="text-3xl font-bold">$9</span>
-                            <span class="text-gray-600 ml-1">/ month</span>
-                        </div>
-                        <p class="text-gray-600 mb-6">Perfect for creators and professionals.</p>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Unlimited links</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Advanced analytics</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">All themes + custom themes</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Remove LinkHub branding</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Priority support</span>
-                            </li>
-                        </ul>
-                        <button class="w-full bg-indigo-600 text-white font-medium py-2 rounded-lg hover:bg-indigo-700 transition">Get Started</button>
-                    </div>
-                </div>
-                
-                <!-- Business Plan -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Business</h3>
-                        <div class="flex items-baseline mb-4">
-                            <span class="text-3xl font-bold">$19</span>
-                            <span class="text-gray-600 ml-1">/ month</span>
-                        </div>
-                        <p class="text-gray-600 mb-6">For businesses and teams.</p>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Everything in Pro</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Custom domain</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Team collaboration</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">API access</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-gray-700">Advanced security</span>
-                            </li>
-                        </ul>
-                        <button class="w-full border border-indigo-600 text-indigo-600 font-medium py-2 rounded-lg hover:bg-indigo-50 transition">Get Started</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-10">
-                <p class="text-gray-600 mb-4">Need a custom solution for your enterprise?</p>
-                <button class="border border-gray-300 px-6 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-100">Contact Sales</button>
-            </div>
-        </div>
-    </section>
+            );
+        }
 
-    <!-- Testimonials Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">What Our Users Say</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Join thousands of creators and businesses who use LinkHub to grow their audience.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4 text-indigo-600 font-bold">
-                            M
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Michael Johnson</h4>
-                            <p class="text-sm text-gray-500">Content Creator</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">"LinkHub has been a game-changer for my social media presence. I can now share all my content in one place, and the analytics help me understand what my audience is interested in."</p>
-                    <div class="flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4 text-indigo-600 font-bold">
-                            S
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Sarah Williams</h4>
-                            <p class="text-sm text-gray-500">Small Business Owner</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">"As a small business owner, I needed a simple way to share my website, online store, and social media profiles. LinkHub made it incredibly easy, and the custom domain feature looks so professional."</p>
-                    <div class="flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4 text-indigo-600 font-bold">
-                            D
-                        </div>
-                        <div>
-                            <h4 class="font-bold">David Chen</h4>
-                            <p class="text-sm text-gray-500">Photographer</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">"The themes and customization options in LinkHub are perfect for showcasing my photography work. I've seen a significant increase in client inquiries since I started using it on my Instagram profile."</p>
-                    <div class="flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Find answers to common questions about our service.</p>
-            </div>
-            
-            <div class="max-w-3xl mx-auto">
-                <div class="space-y-6">
-                    <!-- FAQ Item 1 -->
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
-                            <h3 class="font-medium text-lg">What is LinkHub?</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="mt-4 hidden">
-                            <p class="text-gray-600">LinkHub is a platform that allows you to create a personalized page with all your important links in one place. It's perfect for sharing on social media profiles where you can only add one link, like Instagram, Twitter, or TikTok. Instead of constantly changing that one link, you can use your LinkHub page to direct your audience to all your content.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ Item 2 -->
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
-                            <h3 class="font-medium text-lg">How do I create a LinkHub page?</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="mt-4 hidden">
-                            <p class="text-gray-600">Creating a LinkHub page is simple. Sign up for an account, choose a username (which will be your LinkHub URL), add your profile information, and start adding links. You can customize the appearance of your page with different themes and colors, and rearrange your links by dragging and dropping them in the order you prefer.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ Item 3 -->
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
-                            <h3 class="font-medium text-lg">Can I use my own domain name?</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="mt-4 hidden">
-                            <p class="text-gray-600">Yes, with our Business plan, you can connect your own custom domain to your LinkHub page. This gives your page a more professional look and reinforces your brand. We provide simple instructions to help you set up the domain connection through your domain registrar.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ Item 4 -->
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
-                            <h3 class="font-medium text-lg">What analytics do you provide?</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="mt-4 hidden">
-                            <p class="text-gray-600">Our analytics provide insights into how your links are performing. You can see the number of views your page receives, which links are getting the most clicks, and where your visitors are coming from. Pro and Business plans offer more detailed analytics, including geographic location, device information, and referral sources.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ Item 5 -->
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
-                            <h3 class="font-medium text-lg">Can I switch plans later?</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="mt-4 hidden">
-                            <p class="text-gray-600">Yes, you can upgrade or downgrade your plan at any time. When you upgrade, you'll immediately gain access to the additional features of your new plan. If you downgrade, you'll continue to have access to your current plan's features until the end of your billing cycle.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-16 gradient-bg text-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-6">Ready to create your LinkHub page?</h2>
-                <p class="text-lg mb-8 opacity-90">Join thousands of creators, influencers, and businesses who use LinkHub to connect with their audience.</p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button class="bg-white text-indigo-600 font-medium px-8 py-3 rounded-lg hover:bg-gray-100 transition duration-300">Sign Up Free</button>
-                    <button class="border border-white text-white font-medium px-8 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300">See Examples</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">LinkHub</h3>
-                    <p class="text-gray-400 mb-4">The simple way to share all your content with one link.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="font-medium mb-4">Product</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
-                        <li><a href="#themes" class="text-gray-400 hover:text-white">Themes</a></li>
-                        <li><a href="#pricing" class="text-gray-400 hover:text-white">Pricing</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Examples</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-medium mb-4">Resources</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">API</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Status</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-medium mb-4">Company</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">About</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Legal</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between">
-                <p class="text-gray-400">&copy; 2023 LinkHub. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center toast">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-        </svg>
-        <span id="toastMessage">Theme changed successfully!</span>
-    </div>
-
-    <!-- Add Link Modal -->
-    <div id="addLinkModal" class="fixed inset-0 flex items-center justify-center z-50 modal hidden">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 modal-content">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Add New Link</h3>
-                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label for="linkTitle" class="block text-sm font-medium text-gray-700 mb-1">Link Title</label>
-                        <input type="text" id="linkTitle" placeholder="e.g., My Portfolio" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    
-                    <div>
-                        <label for="linkUrl" class="block text-sm font-medium text-gray-700 mb-1">URL</label>
-                        <input type="url" id="linkUrl" placeholder="https://example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    </div><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b1b998c09091bb',t:'MTc0NjQ2MzcwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<body>
-    
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
 </body>
 </html>
+
+</html><script></script>
