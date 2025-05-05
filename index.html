@@ -6,12 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <!DOCTYPE html>
+    
+</body><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatFlow - WhatsApp Team Inbox</title>
+    <title>LinkBrief - URL Shortener</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,1478 +20,861 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            background-color: #f9fafb;
         }
         
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
         }
         
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s ease;
         }
         
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: #c5c5c5;
-            border-radius: 3px;
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
         
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-            background: #a0a0a0;
+        .url-card {
+            transition: all 0.3s ease;
         }
         
-        .chat-bubble-customer {
-            background-color: #f0f2f5;
-            border-radius: 8px 8px 8px 0;
-            padding: 8px 12px;
-            max-width: 80%;
-            position: relative;
+        .url-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
         
-        .chat-bubble-agent {
-            background-color: #dcf8c6;
-            border-radius: 8px 8px 0 8px;
-            padding: 8px 12px;
-            max-width: 80%;
-            position: relative;
+        .feature-card {
+            transition: transform 0.3s ease;
         }
         
-        .chat-bubble-customer::after {
-            content: "";
-            position: absolute;
-            left: -6px;
-            bottom: 0;
-            width: 10px;
-            height: 10px;
-            background-color: #f0f2f5;
-            clip-path: polygon(0 0, 100% 100%, 100% 0);
-            transform: rotate(90deg);
+        .feature-card:hover {
+            transform: translateY(-5px);
         }
         
-        .chat-bubble-agent::after {
-            content: "";
-            position: absolute;
-            right: -6px;
-            bottom: 0;
-            width: 10px;
-            height: 10px;
-            background-color: #dcf8c6;
-            clip-path: polygon(0 0, 100% 100%, 100% 0);
-            transform: rotate(180deg);
-        }
-        
-        .message-time {
-            font-size: 0.7rem;
-            color: #8696a0;
-            margin-top: 2px;
-            text-align: right;
-        }
-        
-        .sidebar-item {
+        .copy-btn {
             transition: all 0.2s ease;
         }
         
-        .sidebar-item:hover {
-            background-color: #f5f5f5;
+        .copy-btn:hover {
+            background-color: #4f46e5;
+            color: white;
         }
         
-        .sidebar-item.active {
-            background-color: #edf2fa;
-            border-left: 3px solid #25d366;
-        }
-        
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 10;
-            min-width: 180px;
-        }
-        
-        .dropdown-menu.show {
-            display: block;
-        }
-        
-        .dropdown-item {
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .dropdown-item:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .dropdown-divider {
-            height: 1px;
-            background-color: #e5e7eb;
-            margin: 4px 0;
-        }
-        
-        .tooltip {
-            position: relative;
-        }
-        
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
+        .toast {
+            transition: all 0.3s ease;
+            transform: translateY(100px);
             opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 12px;
-            white-space: nowrap;
         }
         
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
+        .toast.show {
+            transform: translateY(0);
             opacity: 1;
         }
         
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 50;
-            align-items: center;
-            justify-content: center;
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
         
-        .modal.show {
-            display: flex;
-        }
-        
-        .modal-content {
-            background-color: white;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalFadeIn 0.3s;
-        }
-        
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
+        @keyframes pulse {
+            0%, 100% {
                 opacity: 1;
-                transform: translateY(0);
+            }
+            50% {
+                opacity: .7;
             }
         }
         
-        .tab-content {
-            display: none;
+        .animate-bounce {
+            animation: bounce 1s infinite;
         }
         
-        .tab-content.active {
-            display: block;
-        }
-        
-        .tab-button {
-            position: relative;
-            padding: 10px 16px;
-            font-weight: 500;
-            color: #6b7280;
-            cursor: pointer;
-        }
-        
-        .tab-button.active {
-            color: #25d366;
-        }
-        
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: #25d366;
-        }
-        
-        .typing-indicator {
-            display: inline-flex;
-            align-items: center;
-        }
-        
-        .typing-indicator span {
-            height: 8px;
-            width: 8px;
-            background-color: #8696a0;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 1px;
-            animation: typing 1.4s infinite both;
-        }
-        
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typing {
-            0% {
+        @keyframes bounce {
+            0%, 100% {
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(-5px);
-            }
-            100% {
-                transform: translateY(0);
+                transform: translateY(-10px);
             }
         }
         
-        .emoji-picker {
-            display: none;
-            position: absolute;
-            bottom: 60px;
-            right: 10px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 300px;
-            height: 300px;
-            z-index: 10;
-            overflow-y: auto;
-            padding: 10px;
+        .modal {
+            transition: opacity 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.5);
         }
         
-        .emoji-picker.show {
-            display: block;
+        .modal-content {
+            transition: transform 0.3s ease;
         }
         
-        .emoji-category {
-            display: flex;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 8px;
+        .modal.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
         
-        .emoji-category-btn {
-            padding: 6px 10px;
-            border-radius: 4px;
-            margin-right: 4px;
-            cursor: pointer;
-        }
-        
-        .emoji-category-btn:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 5px;
-        }
-        
-        .emoji {
-            font-size: 20px;
-            padding: 5px;
-            cursor: pointer;
-            text-align: center;
-            border-radius: 4px;
-        }
-        
-        .emoji:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .template-item {
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-        }
-        
-        .template-item:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #ff3b30;
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 6px;
-        }
-        
-        .status-online {
-            background-color: #25d366;
-        }
-        
-        .status-away {
-            background-color: #f7b731;
-        }
-        
-        .status-offline {
-            background-color: #a0a0a0;
-        }
-        
-        .tag {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            margin-right: 4px;
-        }
-        
-        .tag-new {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .tag-urgent {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-        
-        .tag-resolved {
-            background-color: #e3f2fd;
-            color: #1565c0;
-        }
-        
-        .tag-waiting {
-            background-color: #fff8e1;
-            color: #f57f17;
-        }
-        
-        .contact-info-panel {
-            width: 0;
-            transition: width 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .contact-info-panel.show {
-            width: 320px;
-        }
-        
-        .search-results {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: white;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 20;
-        }
-        
-        .search-results.show {
-            display: block;
-        }
-        
-        .search-result-item {
-            padding: 10px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .search-result-item:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .search-highlight {
-            background-color: #ffeb3b;
-            font-weight: 500;
+        .modal.hidden .modal-content {
+            transform: translateY(-50px);
         }
     </style>
 </head>
-<body class="bg-gray-100 h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-white border-b border-gray-200 py-3 px-4 flex justify-between items-center">
-        <div class="flex items-center">
-            <div class="text-xl font-bold text-green-600 mr-2">ChatFlow</div>
-            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">BETA</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <div class="relative" id="notificationDropdown">
-                <button class="p-2 rounded-full hover:bg-gray-100 relative" onclick="toggleDropdown('notificationMenu')">
-                    <i class="fas fa-bell text-gray-600"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <div id="notificationMenu" class="dropdown-menu right-0 mt-2 w-80">
-                    <div class="p-4 border-b border-gray-200">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-semibold">Notifications</h3>
-                            <button class="text-xs text-blue-600 hover:underline">Mark all as read</button>
-                        </div>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center">
+                    <div class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                        LinkBrief
                     </div>
-                    <div class="max-h-80 overflow-y-auto">
-                        <div class="p-4 border-b border-gray-100 bg-blue-50">
-                            <div class="flex items-start">
-                                <div class="bg-blue-100 rounded-full p-2 mr-3">
-                                    <i class="fas fa-user-plus text-blue-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm">New contact <strong>John Smith</strong> was added</p>
-                                    <p class="text-xs text-gray-500 mt-1">10 minutes ago</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4 border-b border-gray-100 bg-blue-50">
-                            <div class="flex items-start">
-                                <div class="bg-red-100 rounded-full p-2 mr-3">
-                                    <i class="fas fa-exclamation-circle text-red-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm">Urgent message from <strong>Sarah Johnson</strong></p>
-                                    <p class="text-xs text-gray-500 mt-1">25 minutes ago</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4 border-b border-gray-100 bg-blue-50">
-                            <div class="flex items-start">
-                                <div class="bg-green-100 rounded-full p-2 mr-3">
-                                    <i class="fas fa-check-circle text-green-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm">Task <strong>Follow up with clients</strong> completed</p>
-                                    <p class="text-xs text-gray-500 mt-1">1 hour ago</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4 border-b border-gray-100">
-                            <div class="flex items-start">
-                                <div class="bg-gray-100 rounded-full p-2 mr-3">
-                                    <i class="fas fa-cog text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm">System update completed successfully</p>
-                                    <p class="text-xs text-gray-500 mt-1">Yesterday</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4 border-b border-gray-100">
-                            <div class="flex items-start">
-                                <div class="bg-purple-100 rounded-full p-2 mr-3">
-                                    <i class="fas fa-bell text-purple-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm">Reminder: Team meeting at 3:00 PM</p>
-                                    <p class="text-xs text-gray-500 mt-1">Yesterday</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-3 text-center border-t border-gray-200">
-                        <a href="#" class="text-sm text-blue-600 hover:underline">View all notifications</a>
-                    </div>
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#features" class="text-gray-700 hover:text-indigo-600 font-medium">Features</a>
+                    <a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Pricing</a>
+                    <a href="#analytics" class="text-gray-700 hover:text-indigo-600 font-medium">Analytics</a>
+                    <a href="#faq" class="text-gray-700 hover:text-indigo-600 font-medium">FAQ</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="loginBtn" class="hidden md:block border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Log In</button>
+                    <button id="signupBtn" class="hidden md:block btn-primary text-white px-4 py-2 rounded-lg text-sm font-medium">Sign Up Free</button>
+                    <button class="md:hidden text-gray-700" id="mobileMenuBtn">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
-            <div class="relative" id="helpDropdown">
-                <button class="p-2 rounded-full hover:bg-gray-100" onclick="toggleDropdown('helpMenu')">
-                    <i class="fas fa-question-circle text-gray-600"></i>
-                </button>
-                <div id="helpMenu" class="dropdown-menu right-0 mt-2">
-                    <div class="dropdown-item">
-                        <i class="fas fa-book mr-2 text-gray-500"></i>
-                        Documentation
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="fas fa-video mr-2 text-gray-500"></i>
-                        Video Tutorials
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="fas fa-headset mr-2 text-gray-500"></i>
-                        Contact Support
-                    </div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-item">
-                        <i class="fas fa-keyboard mr-2 text-gray-500"></i>
-                        Keyboard Shortcuts
-                    </div>
-                </div>
-            </div>
-            <div class="relative" id="userDropdown">
-                <button class="flex items-center space-x-2 p-1 rounded hover:bg-gray-100" onclick="toggleDropdown('userMenu')">
-                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                        JS
-                    </div>
-                    <div class="hidden md:block text-left">
-                        <div class="text-sm font-medium">James Smith</div>
-                        <div class="text-xs text-gray-500">Admin</div>
-                    </div>
-                    <i class="fas fa-chevron-down text-xs text-gray-500"></i>
-                </button>
-                <div id="userMenu" class="dropdown-menu right-0 mt-2">
-                    <div class="dropdown-item">
-                        <i class="fas fa-user mr-2 text-gray-500"></i>
-                        My Profile
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="fas fa-cog mr-2 text-gray-500"></i>
-                        Account Settings
-                    </div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-item">
-                        <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i>
-                        Sign Out
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden pt-4 pb-2 border-t mt-3">
+                <div class="flex flex-col space-y-3">
+                    <a href="#features" class="text-gray-700 hover:text-indigo-600 font-medium">Features</a>
+                    <a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Pricing</a>
+                    <a href="#analytics" class="text-gray-700 hover:text-indigo-600 font-medium">Analytics</a>
+                    <a href="#faq" class="text-gray-700 hover:text-indigo-600 font-medium">FAQ</a>
+                    <div class="flex space-x-4 pt-2">
+                        <button class="border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 w-1/2">Log In</button>
+                        <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm font-medium w-1/2">Sign Up Free</button>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Main Content -->
-    <div class="flex flex-1 overflow-hidden">
-        <!-- Left Sidebar -->
-        <div class="w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4">
-            <button class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mb-6 hover:bg-green-200">
-                <i class="fas fa-plus"></i>
-            </button>
-            
-            <div class="flex flex-col items-center space-y-4 mb-6">
-                <button class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-100">
-                    <i class="fas fa-inbox"></i>
-                </button>
-                <button class="w-10 h-10 rounded-lg text-gray-500 flex items-center justify-center hover:bg-gray-100 relative">
-                    <i class="fas fa-user-friends"></i>
-                    <span class="notification-badge">5</span>
-                </button>
-                <button class="w-10 h-10 rounded-lg text-gray-500 flex items-center justify-center hover:bg-gray-100">
-                    <i class="fas fa-chart-bar"></i>
-                </button>
-                <button class="w-10 h-10 rounded-lg text-gray-500 flex items-center justify-center hover:bg-gray-100">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
-            
-            <div class="mt-auto flex flex-col items-center space-y-4">
-                <button class="w-10 h-10 rounded-lg text-gray-500 flex items-center justify-center hover:bg-gray-100">
-                    <i class="fas fa-headset"></i>
-                </button>
-                <div class="tooltip">
-                    <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white">
-                        <i class="fas fa-check text-xs"></i>
-                    </div>
-                    <span class="tooltip-text">Connected to WhatsApp</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Conversation List -->
-        <div class="w-80 bg-white border-r border-gray-200 flex flex-col">
-            <!-- Search Bar -->
-            <div class="p-3 border-b border-gray-200">
-                <div class="relative">
-                    <input type="text" placeholder="Search conversations..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" id="searchInput" oninput="searchConversations()">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    <div id="searchResults" class="search-results">
-                        <!-- Search results will be populated here -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Filters -->
-            <div class="p-3 border-b border-gray-200 flex items-center space-x-2">
-                <button class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-800 font-medium">All</button>
-                <button class="px-3 py-1 text-sm rounded-full text-gray-600 hover:bg-gray-100">Unassigned</button>
-                <button class="px-3 py-1 text-sm rounded-full text-gray-600 hover:bg-gray-100">Mine</button>
-                <div class="relative ml-auto">
-                    <button class="p-1 rounded hover:bg-gray-100" onclick="toggleDropdown('filterMenu')">
-                        <i class="fas fa-filter text-gray-500"></i>
-                    </button>
-                    <div id="filterMenu" class="dropdown-menu right-0 mt-2">
-                        <div class="p-3">
-                            <h4 class="font-medium mb-2">Filter by</h4>
-                            <div class="space-y-2">
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="filter-unread" class="mr-2">
-                                    <label for="filter-unread" class="text-sm">Unread</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="filter-assigned" class="mr-2">
-                                    <label for="filter-assigned" class="text-sm">Assigned to me</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="filter-unassigned" class="mr-2">
-                                    <label for="filter-unassigned" class="text-sm">Unassigned</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="filter-flagged" class="mr-2">
-                                    <label for="filter-flagged" class="text-sm">Flagged</label>
-                                </div>
-                            </div>
-                            <h4 class="font-medium mt-4 mb-2">Sort by</h4>
-                            <select class="w-full p-2 border border-gray-300 rounded text-sm">
-                                <option>Newest first</option>
-                                <option>Oldest first</option>
-                                <option>Priority</option>
-                            </select>
-                            <div class="flex justify-end mt-4">
-                                <button class="px-4 py-1 bg-gray-200 rounded text-sm mr-2">Reset</button>
-                                <button class="px-4 py-1 bg-green-600 text-white rounded text-sm">Apply</button>
-                            </div>
+    <!-- Hero Section -->
+    <section class="py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900">Shorten, share, and track your links</h1>
+                    <p class="text-lg md:text-xl mb-8 text-gray-600">Create short, memorable links that redirect to your long URLs. Track clicks and analyze your audience with our powerful analytics.</p>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <div class="mb-4">
+                            <label for="longUrl" class="block text-sm font-medium text-gray-700 mb-1">Enter your long URL</label>
+                            <input type="url" id="longUrl" placeholder="https://example.com/very/long/url/that/needs/shortening" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                            <button id="shortenBtn" class="btn-primary text-white font-medium px-6 py-3 rounded-lg flex-grow">Shorten URL</button>
+                            <button id="advancedBtn" class="border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-lg hover:bg-gray-50">Advanced Options</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Conversation List -->
-            <div class="flex-1 overflow-y-auto scrollbar-thin">
-                <!-- Conversation Item 1 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer active" onclick="loadConversation(1)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
-                                JS
-                            </div>
-                            <div>
-                                <div class="font-medium">John Smith</div>
-                                <div class="text-xs text-gray-500">+1 (555) 123-4567</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">2m</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">I need help with my recent order #12345</div>
-                        <div class="flex items-center">
-                            <span class="w-5 h-5 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">2</span>
-                        </div>
-                    </div>
-                    <div class="flex mt-2">
-                        <span class="tag tag-new">New</span>
-                        <span class="tag tag-urgent">Urgent</span>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 2 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(2)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium mr-3">
-                                SJ
-                            </div>
-                            <div>
-                                <div class="font-medium">Sarah Johnson</div>
-                                <div class="text-xs text-gray-500">+1 (555) 987-6543</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">15m</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">Thank you for your quick response!</div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-double text-blue-500 text-xs"></i>
-                        </div>
-                    </div>
-                    <div class="flex mt-2">
-                        <span class="tag tag-resolved">Resolved</span>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 3 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(3)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium mr-3">
-                                MD
-                            </div>
-                            <div>
-                                <div class="font-medium">Michael Davis</div>
-                                <div class="text-xs text-gray-500">+1 (555) 456-7890</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">1h</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">Is the product available in blue color?</div>
-                        <div class="flex items-center">
-                            <span class="w-5 h-5 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">1</span>
-                        </div>
-                    </div>
-                    <div class="flex mt-2">
-                        <span class="tag tag-waiting">Waiting</span>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 4 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(4)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-medium mr-3">
-                                EW
-                            </div>
-                            <div>
-                                <div class="font-medium">Emma Wilson</div>
-                                <div class="text-xs text-gray-500">+1 (555) 789-0123</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">3h</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">I'd like to schedule a product demo</div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-double text-blue-500 text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 5 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(5)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-medium mr-3">
-                                RB
-                            </div>
-                            <div>
-                                <div class="font-medium">Robert Brown</div>
-                                <div class="text-xs text-gray-500">+1 (555) 234-5678</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">5h</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">How do I reset my password?</div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-double text-gray-400 text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 6 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(6)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-medium mr-3">
-                                LG
-                            </div>
-                            <div>
-                                <div class="font-medium">Lisa Green</div>
-                                <div class="text-xs text-gray-500">+1 (555) 345-6789</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">1d</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">Thanks for your help yesterday!</div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-double text-blue-500 text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 7 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(7)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium mr-3">
-                                DT
-                            </div>
-                            <div>
-                                <div class="font-medium">David Thompson</div>
-                                <div class="text-xs text-gray-500">+1 (555) 567-8901</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">2d</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">When will my order be shipped?</div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-double text-blue-500 text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Conversation Item 8 -->
-                <div class="sidebar-item p-3 border-b border-gray-200 cursor-pointer" onclick="loadConversation(8)">
-                    <div class="flex justify-between items-start mb-1">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-medium mr-3">
-                                JM
-                            </div>
-                            <div>
-                                <div class="font-medium">Jennifer Miller</div>
-                                <div class="text-xs text-gray-500">+1 (555) 678-9012</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500">3d</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-600 truncate w-48">Do you offer international shipping?</div>
-                        <div class="flex items-center">
-                            <i class="fas fa-check-double text-blue-500 text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Chat Area -->
-        <div class="flex-1 flex flex-col bg-gray-50">
-            <!-- Chat Header -->
-            <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-                <div class="flex items-center">
-                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
-                        JS
-                    </div>
-                    <div>
-                        <div class="font-medium flex items-center">
-                            John Smith
-                            <span class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Customer</span>
-                        </div>
-                        <div class="text-xs text-gray-500 flex items-center">
-                            <span class="status-indicator status-online"></span>
-                            Online • Last seen just now
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button class="p-2 rounded-full hover:bg-gray-100 tooltip">
-                        <i class="fas fa-phone text-gray-600"></i>
-                        <span class="tooltip-text">Call</span>
-                    </button>
-                    <button class="p-2 rounded-full hover:bg-gray-100 tooltip">
-                        <i class="fas fa-video text-gray-600"></i>
-                        <span class="tooltip-text">Video Call</span>
-                    </button>
-                    <button class="p-2 rounded-full hover:bg-gray-100 tooltip" onclick="toggleContactInfo()">
-                        <i class="fas fa-info-circle text-gray-600"></i>
-                        <span class="tooltip-text">Contact Info</span>
-                    </button>
+                <div class="md:w-1/2 md:pl-10">
                     <div class="relative">
-                        <button class="p-2 rounded-full hover:bg-gray-100 tooltip" onclick="toggleDropdown('chatMenu')">
-                            <i class="fas fa-ellipsis-v text-gray-600"></i>
-                            <span class="tooltip-text">More Options</span>
-                        </button>
-                        <div id="chatMenu" class="dropdown-menu right-0 mt-2">
-                            <div class="dropdown-item">
-                                <i class="fas fa-user-plus mr-2 text-gray-500"></i>
-                                Assign Conversation
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-lg">Your Shortened URLs</h3>
+                                <span class="text-sm text-gray-500">Last 24 hours</span>
                             </div>
-                            <div class="dropdown-item">
-                                <i class="fas fa-tag mr-2 text-gray-500"></i>
-                                Add Tags
+                            
+                            <!-- URL List -->
+                            <div class="space-y-4" id="urlList">
+                                <!-- URL items will be dynamically added here -->
                             </div>
-                            <div class="dropdown-item">
-                                <i class="fas fa-flag mr-2 text-gray-500"></i>
-                                Flag Conversation
-                            </div>
-                            <div class="dropdown-divider"></div>
-                            <div class="dropdown-item">
-                                <i class="fas fa-archive mr-2 text-gray-500"></i>
-                                Archive Chat
-                            </div>
-                            <div class="dropdown-item">
-                                <i class="fas fa-ban mr-2 text-gray-500"></i>
-                                Block Contact
-                            </div>
-                            <div class="dropdown-item text-red-600">
-                                <i class="fas fa-trash mr-2"></i>
-                                Delete Conversation
+                            
+                            <div class="mt-6 text-center" id="emptyState">
+                                <div class="mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 mb-2">No shortened URLs yet</p>
+                                <p class="text-sm text-gray-400">Your recently shortened URLs will appear here</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Chat Messages -->
-            <div class="flex-1 p-4 overflow-y-auto scrollbar-thin" id="chatMessages">
-                <!-- Date Separator -->
-                <div class="flex justify-center mb-4">
-                    <div class="text-xs bg-gray-200 text-gray-600 px-3 py-1 rounded-full">Today</div>
-                </div>
-                
-                <!-- Customer Message -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs">
-                            JS
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chat-bubble-customer">
-                            <p>Hello, I recently placed an order #12345 and I haven't received any shipping confirmation yet. Can you help me check the status?</p>
-                            <div class="message-time">10:32 AM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Agent Message -->
-                <div class="flex justify-end mb-4">
-                    <div class="chat-bubble-agent">
-                        <p>Hi John, thank you for reaching out. Let me check your order status right away.</p>
-                        <div class="message-time">10:34 AM</div>
-                    </div>
-                </div>
-                
-                <!-- Agent Message -->
-                <div class="flex justify-end mb-4">
-                    <div class="chat-bubble-agent">
-                        <p>I can see that your order #12345 has been processed and is currently being prepared for shipping. It should be dispatched within the next 24 hours.</p>
-                        <div class="message-time">10:35 AM</div>
-                    </div>
-                </div>
-                
-                <!-- Customer Message -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs">
-                            JS
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chat-bubble-customer">
-                            <p>That's great to hear! Will I receive a tracking number once it's shipped?</p>
-                            <div class="message-time">10:37 AM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Agent Message -->
-                <div class="flex justify-end mb-4">
-                    <div class="chat-bubble-agent">
-                        <p>Yes, absolutely! You'll receive an email with the tracking information as soon as your order is dispatched. You can also check the status anytime by logging into your account on our website.</p>
-                        <div class="message-time">10:38 AM</div>
-                    </div>
-                </div>
-                
-                <!-- Customer Message -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs">
-                            JS
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chat-bubble-customer">
-                            <p>Perfect! One more question - I ordered the blue shirt but I'm wondering if I can change it to the green one? Is that still possible?</p>
-                            <div class="message-time">10:40 AM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Agent Message -->
-                <div class="flex justify-end mb-4">
-                    <div class="chat-bubble-agent">
-                        <p>Since your order is still being processed, we should be able to make that change for you. Let me check if the green shirt is available in your size.</p>
-                        <div class="message-time">10:42 AM</div>
-                    </div>
-                </div>
-                
-                <!-- Agent Message -->
-                <div class="flex justify-end mb-4">
-                    <div class="chat-bubble-agent">
-                        <p>Good news! The green shirt is available in your size. I've updated your order to reflect this change. You'll receive a confirmation email shortly.</p>
-                        <div class="message-time">10:45 AM</div>
-                    </div>
-                </div>
-                
-                <!-- Customer Message -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs">
-                            JS
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chat-bubble-customer">
-                            <p>That's fantastic! Thank you so much for your help. I really appreciate it.</p>
-                            <div class="message-time">10:47 AM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Agent Message -->
-                <div class="flex justify-end mb-4">
-                    <div class="chat-bubble-agent">
-                        <p>You're very welcome, John! Is there anything else I can assist you with today?</p>
-                        <div class="message-time">10:48 AM</div>
-                    </div>
-                </div>
-                
-                <!-- Customer Message -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs">
-                            JS
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chat-bubble-customer">
-                            <p>No, that's all for now. Thanks again!</p>
-                            <div class="message-time">10:50 AM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Customer Message -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs">
-                            JS
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chat-bubble-customer">
-                            <p>Actually, I just remembered - do you have any ongoing promotions or discounts that I could use for my next order?</p>
-                            <div class="message-time">10:52 AM</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Typing Indicator -->
-                <div class="flex mb-4">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                            <i class="fas fa-user text-xs"></i>
-                        </div>
-                    </div>
-                    <div class="chat-bubble-customer py-2 px-4">
-                        <div class="typing-indicator">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Chat Input -->
-            <div class="bg-white border-t border-gray-200 p-3">
-                <div class="flex items-end">
-                    <div class="flex-1 relative">
-                        <textarea id="messageInput" placeholder="Type a message..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none" rows="2"></textarea>
                         
-                        <!-- Emoji Picker -->
-                        <div id="emojiPicker" class="emoji-picker">
-                            <div class="emoji-category">
-                                <button class="emoji-category-btn">😀</button>
-                                <button class="emoji-category-btn">❤️</button>
-                                <button class="emoji-category-btn">🙌</button>
-                                <button class="emoji-category-btn">🐶</button>
-                                <button class="emoji-category-btn">🍎</button>
-                                <button class="emoji-category-btn">🏠</button>
-                                <button class="emoji-category-btn">⚽</button>
-                                <button class="emoji-category-btn">✈️</button>
-                            </div>
-                            <div class="emoji-grid">
-                                <div class="emoji" onclick="addEmoji('😀')">😀</div>
-                                <div class="emoji" onclick="addEmoji('😃')">😃</div>
-                                <div class="emoji" onclick="addEmoji('😄')">😄</div>
-                                <div class="emoji" onclick="addEmoji('😁')">😁</div>
-                                <div class="emoji" onclick="addEmoji('😆')">😆</div>
-                                <div class="emoji" onclick="addEmoji('😅')">😅</div>
-                                <div class="emoji" onclick="addEmoji('😂')">😂</div>
-                                <div class="emoji" onclick="addEmoji('🤣')">🤣</div>
-                                <div class="emoji" onclick="addEmoji('😊')">😊</div>
-                                <div class="emoji" onclick="addEmoji('😇')">😇</div>
-                                <div class="emoji" onclick="addEmoji('🙂')">🙂</div>
-                                <div class="emoji" onclick="addEmoji('🙃')">🙃</div>
-                                <div class="emoji" onclick="addEmoji('😉')">😉</div>
-                                <div class="emoji" onclick="addEmoji('😌')">😌</div>
-                                <div class="emoji" onclick="addEmoji('😍')">😍</div>
-                                <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
-                                <div class="emoji" onclick="addEmoji('😘')">😘</div>
-                                <div class="emoji" onclick="addEmoji('😗')">😗</div>
-                                <div class="emoji" onclick="addEmoji('😙')">😙</div>
-                                <div class="emoji" onclick="addEmoji('😚')">😚</div>
-                                <div class="emoji" onclick="addEmoji('😋')">😋</div>
-                                <div class="emoji" onclick="addEmoji('😛')">😛</div>
-                                <div class="emoji" onclick="addEmoji('😝')">😝</div>
-                                <div class="emoji" onclick="addEmoji('😜')">😜</div>
-                                <div class="emoji" onclick="addEmoji('🤪')">🤪</div>
-                                <div class="emoji" onclick="addEmoji('🤨')">🤨</div>
-                                <div class="emoji" onclick="addEmoji('🧐')">🧐</div>
-                                <div class="emoji" onclick="addEmoji('🤓')">🤓</div>
-                                <div class="emoji" onclick="addEmoji('😎')">😎</div>
-                                <div class="emoji" onclick="addEmoji('🤩')">🤩</div>
-                                <div class="emoji" onclick="addEmoji('🥳')">🥳</div>
-                                <div class="emoji" onclick="addEmoji('😏')">😏</div>
+                        <!-- Decorative Element -->
+                        <div class="absolute -bottom-4 -right-4 bg-gradient-to-r from-indigo-600 to-purple-600 p-4 rounded-lg shadow-lg transform rotate-6 hidden md:block">
+                            <div class="flex items-center space-x-3 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd" />
+                                </svg>
+                                <span>50K+ links shortened today</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex items-center ml-3">
-                        <button class="p-2 rounded-full hover:bg-gray-100 tooltip mr-1" onclick="toggleEmojiPicker()">
-                            <i class="far fa-smile text-gray-600"></i>
-                            <span class="tooltip-text">Emoji</span>
-                        </button>
-                        <button class="p-2 rounded-full hover:bg-gray-100 tooltip mr-1" onclick="openTemplatesModal()">
-                            <i class="fas fa-reply text-gray-600"></i>
-                            <span class="tooltip-text">Templates</span>
-                        </button>
-                        <button class="p-2 rounded-full hover:bg-gray-100 tooltip mr-1">
-                            <i class="fas fa-paperclip text-gray-600"></i>
-                            <span class="tooltip-text">Attach</span>
-                        </button>
-                        <button class="bg-green-500 text-white p-2 rounded-full hover:bg-green-600 tooltip" onclick="sendMessage()">
-                            <i class="fas fa-paper-plane"></i>
-                            <span class="tooltip-text">Send</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex justify-between items-center mt-2 text-xs text-gray-500">
-                    <div>
-                        <span class="mr-4"><i class="fas fa-user-circle mr-1"></i> Assigned to: James Smith</span>
-                        <span><i class="fas fa-tag mr-1"></i> Tags: Order Issue, Priority</span>
-                    </div>
-                    <div>
-                        <button class="hover:text-gray-700">
-                            <i class="fas fa-keyboard mr-1"></i> Shortcuts
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Contact Info Panel -->
-        <div class="contact-info-panel bg-white border-l border-gray-200 overflow-y-auto scrollbar-thin" id="contactInfoPanel">
-            <div class="p-4 border-b border-gray-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-semibold">Contact Information</h3>
-                    <button class="text-gray-500 hover:text-gray-700" onclick="toggleContactInfo()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="flex flex-col items-center mb-4">
-                    <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl mb-2">
-                        JS
-                    </div>
-                    <h4 class="font-medium text-lg">John Smith</h4>
-                    <p class="text-gray-500 text-sm">Customer since Jan 2023</p>
-                </div>
-            </div>
-            
-            <div class="p-4 border-b border-gray-200">
-                <h4 class="font-medium mb-3">Contact Details</h4>
-                <div class="space-y-3">
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium">WhatsApp</div>
-                            <div class="text-gray-500 text-sm">+1 (555) 123-4567</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-                            <i class="far fa-envelope"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium">Email</div>
-                            <div class="text-gray-500 text-sm">john.smith@example.com</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-4 border-b border-gray-200">
-                <h4 class="font-medium mb-3">Customer Information</h4>
-                <div class="space-y-2">
-                    <div class="flex justify-between">
-                        <span class="text-sm text-gray-500">Customer ID</span>
-                        <span class="text-sm font-medium">CUS-12345</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-sm text-gray-500">Total Orders</span>
-                        <span class="text-sm font-medium">7</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-sm text-gray-500">Total Spent</span>
-                        <span class="text-sm font-medium">$1,245.00</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-sm text-gray-500">Last Order</span>
-                        <span class="text-sm font-medium">2 days ago</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-4 border-b border-gray-200">
-                <div class="flex justify-between items-center mb-3">
-                    <h4 class="font-medium">Recent Orders</h4>
-                    <a href="#" class="text-xs text-blue-600 hover:underline">View All</a>
-                </div>
-                <div class="space-y-3">
-                    <div class="bg-gray-50 p-3 rounded-lg">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-medium text-sm">#12345</span>
-                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">Processing</span>
-                        </div>
-                        <div class="text-xs text-gray-500 mb-1">Placed on May 15, 2023</div>
-                        <div class="text-sm font-medium">$89.99</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded-lg">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-medium text-sm">#12289</span>
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Delivered</span>
-                        </div>
-                        <div class="text-xs text-gray-500 mb-1">Placed on May 2, 2023</div>
-                        <div class="text-sm font-medium">$124.50</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded-lg">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-medium text-sm">#12156</span>
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Delivered</span>
-                        </div>
-                        <div class="text-xs text-gray-500 mb-1">Placed on Apr 18, 2023</div>
-                        <div class="text-sm font-medium">$75.25</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-4 border-b border-gray-200">
-                <h4 class="font-medium mb-3">Notes</h4>
-                <div class="bg-gray-50 p-3 rounded-lg mb-3">
-                    <div class="text-xs text-gray-500 mb-1">Added by James Smith • May 10, 2023</div>
-                    <p class="text-sm">Customer prefers email communication for order updates.</p>
-                </div>
-                <div class="bg-gray-50 p-3 rounded-lg">
-                    <div class="text-xs text-gray-500 mb-1">Added by Sarah Johnson • Apr 22, 2023</div>
-                    <p class="text-sm">VIP customer, eligible for free shipping on all orders.</p>
-                </div>
-                <button class="mt-3 w-full border border-gray-300 rounded-lg p-2 text-sm hover:bg-gray-50">
-                    <i class="fas fa-plus mr-1"></i> Add Note
-                </button>
-            </div>
-            
-            <div class="p-4">
-                <h4 class="font-medium mb-3">Tags</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
-                    <span class="tag tag-new">New Customer</span>
-                    <span class="tag tag-urgent">Priority</span>
-                    <span class="tag" style="background-color: #e8eaf6; color: #3949ab;">Order Issue</span>
-                </div>
-                <button class="w-full border border-gray-300 rounded-lg p-2 text-sm hover:bg-gray-50">
-                    <i class="fas fa-plus mr-1"></i> Add Tag
-                </button>
-            </div>
-        </div>
-    </div>
+    </section>
 
-    <!-- Templates Modal -->
-    <div id="templatesModal" class="modal">
-        <div class="modal-content max-w-2xl">
-            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="font-semibold text-lg">Response Templates</h3>
-                <button class="text-gray-500 hover:text-gray-700" onclick="closeTemplatesModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Powerful Features</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Everything you need to manage, track, and optimize your shortened URLs.</p>
             </div>
             
-            <div class="p-4">
-                <div class="mb-4">
-                    <input type="text" placeholder="Search templates..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Custom Short Links</h3>
+                    <p class="text-gray-600 mb-4">Create branded, memorable links that reflect your brand and are easy to share.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Custom back-half</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Branded domains</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">QR code generation</span>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="flex border-b border-gray-200">
-                    <button class="tab-button active" data-tab="personal">Personal Templates</button>
-                    <button class="tab-button" data-tab="team">Team Templates</button>
-                    <button class="tab-button" data-tab="saved">Saved Responses</button>
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Detailed Analytics</h3>
+                    <p class="text-gray-600 mb-4">Track performance with comprehensive analytics to understand your audience better.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Click tracking</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Geographic data</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Device & browser info</span>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="py-4">
-                    <div id="personal-tab" class="tab-content active">
-                        <div class="space-y-3">
-                            <div class="template-item" onclick="useTemplate('Thank you for contacting us! I\'ll be happy to help you with your inquiry.')">
-                                <div class="font-medium mb-1">Greeting</div>
-                                <p class="text-sm text-gray-600">Thank you for contacting us! I'll be happy to help you with your inquiry.</p>
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Link Management</h3>
+                    <p class="text-gray-600 mb-4">Organize, edit, and secure your links with our powerful management tools.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Password protection</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Expiration dates</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-700">Bulk link creation</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Preview Section -->
+    <section id="analytics" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Powerful Analytics Dashboard</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Gain valuable insights about your audience and optimize your marketing strategy.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                <div class="border-b border-gray-200">
+                    <div class="flex overflow-x-auto">
+                        <button class="px-6 py-4 text-sm font-medium text-indigo-600 border-b-2 border-indigo-600">Overview</button>
+                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Clicks</button>
+                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Geography</button>
+                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Referrers</button>
+                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Devices</button>
+                        <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">Browsers</button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Total Clicks</h4>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">+24% ↑</span>
                             </div>
-                            <div class="template-item" onclick="useTemplate('I\'m checking your order status right now. Please give me a moment.')">
-                                <div class="font-medium mb-1">Order Status Check</div>
-                                <p class="text-sm text-gray-600">I'm checking your order status right now. Please give me a moment.</p>
+                            <div class="flex items-baseline">
+                                <span class="text-2xl font-bold">12,845</span>
+                                <span class="text-sm text-gray-500 ml-2">last 30 days</span>
                             </div>
-                            <div class="template-item" onclick="useTemplate('Your order has been shipped and should arrive within 3-5 business days. You can track it using this link: [TRACKING_LINK]')">
-                                <div class="font-medium mb-1">Order Shipped</div>
-                                <p class="text-sm text-gray-600">Your order has been shipped and should arrive within 3-5 business days. You can track it using this link: [TRACKING_LINK]</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Active Links</h4>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">+8% ↑</span>
                             </div>
-                            <div class="template-item" onclick="useTemplate('I\'m sorry to hear you\'re experiencing an issue. Let me help resolve this for you right away.')">
-                                <div class="font-medium mb-1">Issue Resolution</div>
-                                <p class="text-sm text-gray-600">I'm sorry to hear you're experiencing an issue. Let me help resolve this for you right away.</p>
+                            <div class="flex items-baseline">
+                                <span class="text-2xl font-bold">245</span>
+                                <span class="text-sm text-gray-500 ml-2">links</span>
                             </div>
-                            <div class="template-item" onclick="useTemplate('Is there anything else I can assist you with today?')">
-                                <div class="font-medium mb-1">Follow-up</div>
-                                <p class="text-sm text-gray-600">Is there anything else I can assist you with today?</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Top Location</h4>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-2xl font-bold">USA</span>
+                                <span class="text-sm text-gray-500 ml-2">42% of traffic</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Top Device</h4>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-2xl font-bold">Mobile</span>
+                                <span class="text-sm text-gray-500 ml-2">68% of clicks</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div id="team-tab" class="tab-content">
-                        <div class="space-y-3">
-                            <div class="template-item" onclick="useTemplate('Hello! Thank you for contacting our support team. My name is [NAME] and I\'ll be assisting you today.')">
-                                <div class="font-medium mb-1">Team Greeting</div>
-                                <p class="text-sm text-gray-600">Hello! Thank you for contacting our support team. My name is [NAME] and I'll be assisting you today.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2">
+                            <h3 class="font-medium mb-4">Click Activity</h3>
+                            <div class="bg-gray-50 rounded-lg p-4 h-64 flex items-center justify-center">
+                                <div class="w-full h-48 relative">
+                                    <!-- Simple chart representation -->
+                                    <div class="absolute bottom-0 left-0 w-full h-full flex items-end">
+                                        <div class="w-1/12 h-20 bg-indigo-200 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-24 bg-indigo-300 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-16 bg-indigo-200 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-32 bg-indigo-400 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-28 bg-indigo-300 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-22 bg-indigo-200 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-38 bg-indigo-500 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-42 bg-indigo-600 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-30 bg-indigo-400 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-36 bg-indigo-500 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-44 bg-indigo-600 mx-0.5 rounded-t-sm"></div>
+                                        <div class="w-1/12 h-40 bg-indigo-500 mx-0.5 rounded-t-sm"></div>
+                                    </div>
+                                    <div class="absolute bottom-0 left-0 w-full border-t border-gray-300"></div>
+                                </div>
                             </div>
-                            <div class="template-item" onclick="useTemplate('We\'re currently experiencing higher than normal message volume. We appreciate your patience as we work to respond to everyone.')">
-                                <div class="font-medium mb-1">High Volume Notice</div>
-                                <p class="text-sm text-gray-600">We're currently experiencing higher than normal message volume. We appreciate your patience as we work to respond to everyone.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium mb-4">Top Links</h3>
+                            <div class="bg-gray-50 rounded-lg p-4 h-64 overflow-y-auto">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <span class="text-blue-600 font-medium">1</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm">linkbr.ef/product</p>
+                                                <p class="text-xs text-gray-500">4,256 clicks</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-green-600 text-xs">+12%</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <span class="text-blue-600 font-medium">2</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm">linkbr.ef/campaign</p>
+                                                <p class="text-xs text-gray-500">3,845 clicks</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-green-600 text-xs">+8%</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <span class="text-blue-600 font-medium">3</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm">linkbr.ef/webinar</p>
+                                                <p class="text-xs text-gray-500">2,156 clicks</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-red-600 text-xs">-3%</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <span class="text-blue-600 font-medium">4</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm">linkbr.ef/blog</p>
+                                                <p class="text-xs text-gray-500">1,845 clicks</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-green-600 text-xs">+15%</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <span class="text-blue-600 font-medium">5</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-sm">linkbr.ef/offer</p>
+                                                <p class="text-xs text-gray-500">1,256 clicks</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-green-600 text-xs">+5%</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="template-item" onclick="useTemplate('For security purposes, could you please verify your account by providing your order number and the email address associated with your account?')">
-                                <div class="font-medium mb-1">Account Verification</div>
-                                <p class="text-sm text-gray-600">For security purposes, could you please verify your account by providing your order number and the email address associated with your account?</p>
-                            </div>
-                            <div class="template-item" onclick="useTemplate('Our business hours are Monday to Friday, 9 AM to 5 PM EST. We\'ll respond to your message as soon as we\'re back in the office.')">
-                                <div class="font-medium mb-1">Business Hours</div>
-                                <p class="text-sm text-gray-600">Our business hours are Monday to Friday, 9 AM to 5 PM EST. We'll respond to your message as soon as we're back in the office.</p>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Choose the plan that fits your needs. No hidden fees or surprises.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Free Plan -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Free</h3>
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-3xl font-bold">$0</span>
+                            <span class="text-gray-600 ml-1">/ month</span>
+                        </div>
+                        <p class="text-gray-600 mb-6">Perfect for personal use and trying out our service.</p>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Up to 50 links</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Basic analytics</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Standard link expiration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">LinkBrief domain only</span>
+                            </li>
+                        </ul>
+                        <button class="w-full border border-indigo-600 text-indigo-600 font-medium py-2 rounded-lg hover:bg-indigo-50 transition">Get Started</button>
+                    </div>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-indigo-500 transform scale-105 z-10">
+                    <div class="bg-indigo-500 text-white text-center py-2 text-sm font-medium">MOST POPULAR</div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Pro</h3>
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-3xl font-bold">$19</span>
+                            <span class="text-gray-600 ml-1">/ month</span>
+                        </div>
+                        <p class="text-gray-600 mb-6">Perfect for professionals and small businesses.</p>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Unlimited links</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Advanced analytics</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Custom link expiration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Custom back-half</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">QR code generation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Password protection</span>
+                            </li>
+                        </ul>
+                        <button class="w-full bg-indigo-600 text-white font-medium py-2 rounded-lg hover:bg-indigo-700 transition">Get Started</button>
+                    </div>
+                </div>
+                
+                <!-- Business Plan -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Business</h3>
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-3xl font-bold">$49</span>
+                            <span class="text-gray-600 ml-1">/ month</span>
+                        </div>
+                        <p class="text-gray-600 mb-6">For teams and businesses with advanced needs.</p>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Everything in Pro</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Custom branded domain</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Team collaboration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">API access</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Priority support</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Advanced security</span>
+                            </li>
+                        </ul>
+                        <button class="w-full border border-indigo-600 text-indigo-600 font-medium py-2 rounded-lg hover:bg-indigo-50 transition">Get Started</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <p class="text-gray-600 mb-4">Need a custom solution for your enterprise?</p>
+                <button class="border border-gray-300 px-6 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-100">Contact Sales</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Find answers to common questions about our URL shortener service.</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-6">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
+                            <h3 class="font-medium text-lg">How does URL shortening work?</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="mt-4 hidden">
+                            <p class="text-gray-600">URL shortening works by taking a long URL and creating a shorter, unique URL that redirects to the original URL. When someone clicks on the shortened link, they are first directed to our server, which then redirects them to the original destination. This process happens almost instantly and allows us to track clicks and gather analytics.</p>
                         </div>
                     </div>
                     
-                    <div id="saved-tab" class="tab-content">
-                        <div class="space-y-3">
-                            <div class="template-item" onclick="useTemplate('We offer free shipping on all orders over $50. Standard shipping typically takes 3-5 business days, while express shipping takes 1-2 business days.')">
-                                <div class="font-medium mb-1">Shipping Policy</div>
-                                <p class="text-sm text-gray-600">We offer free shipping on all orders over $50. Standard shipping typically takes 3-5 business days, while express shipping takes 1-2 business days.</p>
-                            </div>
-                            <div class="template-item" onclick="useTemplate('You can return any unused and unopened items within 30 days of delivery for a full refund. Please visit our website to initiate the return process.')">
-                                <div class="font-medium mb-1">Return Policy</div>
-                                <p class="text-sm text-gray-600">You can return any unused and unopened items within 30 days of delivery for a full refund. Please visit our website to initiate the return process.</p>
-                            </div>
-                            <div class="template-item" onclick="useTemplate('Thank you for your feedback! We\'re always looking to improve our products and services, and your input is invaluable to us.')">
-                                <div class="font-medium mb-1">Feedback Response</div>
-                                <p class="text-sm text-gray-600">Thank you for your feedback! We're always looking to improve our products and services, and your input is invaluable to us.</p>
-                            </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
+                            <h3 class="font-medium text-lg">Are shortened links permanent?</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="mt-4 hidden">
+                            <p class="text-gray-600">Yes, our shortened links are permanent by default. However, you can set an expiration date for your links if you want them to stop working after a certain time. Free users have links that expire after 30 days of inactivity, while paid plans offer permanent links with optional expiration settings.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
+                            <h3 class="font-medium text-lg">Can I customize my shortened URLs?</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="mt-4 hidden">
+                            <p class="text-gray-600">Yes, with our Pro and Business plans, you can customize the back-half of your shortened URLs to make them more memorable and branded. For example, instead of "linkbr.ef/a1b2c3", you could have "linkbr.ef/summer-sale". Business plan users can also use their own custom domain for branded links.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
+                            <h3 class="font-medium text-lg">What analytics do you provide?</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="mt-4 hidden">
+                            <p class="text-gray-600">Our analytics provide insights into how your links are performing. You can see the number of clicks, geographic location of clickers, referral sources, devices, browsers, and time of clicks. Pro and Business plans offer more detailed analytics and longer data retention periods.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 5 -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <button class="flex justify-between items-center w-full text-left focus:outline-none" onclick="toggleFAQ(this)">
+                            <h3 class="font-medium text-lg">Is there an API available?</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="mt-4 hidden">
+                            <p class="text-gray-600">Yes, we offer a RESTful API for Business plan users. The API allows you to create, manage, and retrieve analytics for your shortened URLs programmatically. This is perfect for integrating our service with your existing workflows and applications.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="p-4 border-t border-gray-200 flex justify-between">
-                <button class="px-4 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50" onclick="closeTemplatesModal()">Cancel</button>
-                <button class="px-4 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700" onclick="openNewTemplateModal()">Create New Template</button>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 gradient-bg text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">Ready to start shortening URLs?</h2>
+                <p class="text-lg mb-8 opacity-90">Join thousands of marketers, content creators, and businesses who use LinkBrief to optimize their links.</p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-white text-indigo-600 font-medium px-8 py-3 rounded-lg hover:bg-gray-100 transition duration-300">Sign Up Free</button>
+                    <button class="border border-white text-white font-medium px-8 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300">Learn More</button>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- New Template Modal -->
-    <div id="newTemplateModal" class="modal">
-        <div class="modal-content max-w-lg">
-            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="font-semibold text-lg">Create New Template</h3>
-                <button class="text-gray-500 hover:text-gray-700" onclick="closeNewTemplateModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="p-4">
-                <div class="mb-4">
-                    <label for="templateName" class="block text-sm font-medium text-gray-700 mb-1">Template Name</label>
-                    <input type="text" id="templateName" placeholder="E.g., Greeting, Order Status, etc." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                </div>
-                
-                <div class="mb-4">
-                    <label for="templateContent" class="block text-sm font-medium text-gray-700 mb-1">Template Content</label>
-                    <textarea id="templateContent" placeholder="Enter your template content here..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none" rows="6"></textarea>
-                    <p class="text-xs text-gray-500 mt-1">Use [NAME], [EMAIL], etc. as placeholders for dynamic content.</p>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Template Type</label>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">LinkBrief</h3>
+                    <p class="text-gray-400 mb-4">The simple, powerful URL shortener that helps you track and optimize your links.</p>
                     <div class="flex space-x-4">
-                        <div class="flex items-center">
-                            <input type="radio" id="personalType" name="templateType" class="mr-2" checked>
-                            <label for="personalType" class="text-sm">Personal</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="teamType" name="templateType" class="mr-2">
-                            <label for="teamType" class="text-sm">Team</label>
-                        </div>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Categories</label>
-                    <div class="flex flex-wrap gap-2">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="catGreeting" class="mr-1">
-                            <label for="catGreeting" class="text-sm">Greeting</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="catOrders" class="mr-1">
-                            <label for="catOrders" class="text-sm">Orders</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="catSupport" class="mr-1">
-                            <label for="catSupport" class="text-sm">Support</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="catFeedback" class="mr-1">
-                            <label for="catFeedback" class="text-sm">Feedback</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="catClosing" class="mr-1">
-                            <label for="catClosing" class="text-sm">Closing</label>
-                        </div>
-                    </div>
+                    <h4 class="font-medium mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-white">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">API</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Integrations</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Developers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Status</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Legal</a></li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="p-4 border-t border-gray-200 flex justify-end space-x-3">
-                <button class="px-4 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50" onclick="closeNewTemplateModal()">Cancel</button>
-                <button class="px-4 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700" onclick="saveNewTemplate()">Save Template</button>
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between">
+                <p class="text-gray-400">&copy; 2023 LinkBrief. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center toast">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span id="toastMessage">Link copied to clipboard!</span>
+    </div>
+
+    <!-- Advanced Options Modal -->
+    <div id="advancedModal" class="fixed inset-0 flex items-center justify-center z-50 modal hidden">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Advanced Options</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="customBackHalf" class="block text-sm font-medium text-gray-700 mb-1">Custom back-half (Pro & Business)</label>
+                        <input type="text" id="customBackHalf" placeholder="e.g., summer-sale" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label for="expirationDate" class="block text-sm font-medium text-gray-700 mb-1">Expiration date (optional)</label>
+                        <input type="date" id="expirationDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password protection (Pro & Business)</label>
+                        <div class="flex space-x-2">
+                            <input type="password" id="linkPassword" placeholder="Enter password" class="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">Enable</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">UTM parameters</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" placeholder="utm_source" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" placeholder="utm_medium" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" placeholder="utm_campaign" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" placeholder="utm_content" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="cancelModalBtn" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2 hover:bg-gray-50">Cancel</button>
+                    <button id="applyOptionsBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Apply Options</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Toggle dropdowns
-        function toggleDropdown(id) {
-            const dropdown = document.getElementById(id);
-            const allDropdowns = document.querySelectorAll('.dropdown-menu');
-            
-            // Close all other dropdowns
-            allDropdowns.forEach(menu => {
-                if (menu.id !== id && menu.classList.contains('show')) {
-                    menu.classList.remove('show');
-                }
-            });
-            
-            // Toggle the clicked dropdown
-            dropdown.classList.toggle('show');
-        }
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
         
-        // Close dropdowns when clicking outside
-        window.addEventListener('click', function(event) {
-            if (!event.target.closest('.dropdown-menu') && !event.target.closest('[onclick*="toggleDropdown"]')) {
-                const dropdowns = document.querySelectorAll('.dropdown-menu');
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('show');
-                });
-            }
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
         
-        // Toggle FAQ items
+        // FAQ toggle
         function toggleFAQ(element) {
             const content = element.nextElementSibling;
             const icon = element.querySelector('svg');
@@ -1499,60 +883,89 @@
             icon.classList.toggle('rotate-180');
         }
         
-        // Toggle mobile menu
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
+        // Modal functionality
+        const advancedBtn = document.getElementById('advancedBtn');
+        const advancedModal = document.getElementById('advancedModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const applyOptionsBtn = document.getElementById('applyOptionsBtn');
+        
+        advancedBtn.addEventListener('click', () => {
+            advancedModal.classList.remove('hidden');
         });
         
-        // Toggle contact info panel
-        function toggleContactInfo() {
-            const panel = document.getElementById('contactInfoPanel');
-            panel.classList.toggle('show');
+        function closeModal() {
+            advancedModal.classList.add('hidden');
         }
         
-        // Toggle emoji picker
-        function toggleEmojiPicker() {
-            const emojiPicker = document.getElementById('emojiPicker');
-            emojiPicker.classList.toggle('show');
-        }
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelModalBtn.addEventListener('click', closeModal);
+        applyOptionsBtn.addEventListener('click', closeModal);
         
-        // Add emoji to message input
-        function addEmoji(emoji) {
-            const messageInput = document.getElementById('messageInput');
-            messageInput.value += emoji;
-            messageInput.focus();
-        }
+        // Toast notification
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
         
-        // Close emoji picker when clicking outside
-        window.addEventListener('click', function(event) {
-            if (!event.target.closest('#emojiPicker') && !event.target.closest('[onclick*="toggleEmojiPicker"]')) {
-                document.getElementById('emojiPicker').classList.remove('show');
-            }
-        });
-        
-        // Templates modal functions
-        function openTemplatesModal() {
-            document.getElementById('templatesModal').classList.add('show');
-        }
-        
-        function closeTemplatesModal() {
-            document.getElementById('templatesModal').classList.remove('show');
-        }
-        
-        function openNewTemplateModal() {
-            closeTemplatesModal();
-            document.getElementById('newTemplateModal').classList.add('show');
-        }
-        
-        function closeNewTemplateModal() {
-            document.getElementById('newTemplateModal').classList.remove('show');
-        }
-        
-        function saveNewTemplate() {
-            // Simulate saving template
-            const templateName = document.getElementById('templateName').value;
-            const templateContent = document.getElementById('templateContent').value;
+        function showToast(message, duration = 3000) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
             
-            if (templateName<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b1dad5c6c35511',t:'MTc0NjQ2NTA2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-</body>
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        // URL shortening functionality
+        const shortenBtn = document.getElementById('shortenBtn');
+        const longUrlInput = document.getElementById('longUrl');
+        const urlList = document.getElementById('urlList');
+        const emptyState = document.getElementById('emptyState');
+        
+        // Sample shortened URLs for demo
+        const sampleUrls = [
+            {
+                original: 'https://example.com/very/long/url/that/needs/shortening',
+                shortened: 'linkbr.ef/a1b2c3',
+                clicks: 0,
+                date: new Date()
+            }
+        ];
+        
+        // Function to create URL card
+        function createUrlCard(url) {
+            const card = document.createElement('div');
+            card.className = 'url-card bg-gray-50 rounded-lg p-4 hover:bg-gray-100';
+            
+            card.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div class="mb-2 sm:mb-0">
+                        <p class="text-xs text-gray-500 mb-1">Original URL</p>
+                        <p class="text-sm text-gray-700 truncate">${url.original}</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">${url.clicks} clicks</span>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center">
+                        <span class="text-indigo-600 font-medium">${url.shortened}</span>
+                    </div>
+                    <div class="mt-2 sm:mt-0 flex space-x-2">
+                        <button class="copy-btn text-xs border border-gray-300 rounded-md px-3 py-1 hover:bg-indigo-600 hover:text-white hover:border-indigo-600">Copy</button>
+                        <button class="text-xs border border-gray-300 rounded-md px-3 py-1 hover:bg-gray-100">QR Code</button>
+                        <button class="text-xs border border-gray-300 rounded-md px-3 py-1 hover:bg-gray-100">Stats</button>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listener to copy button
+            const copyBtn = card.querySelector('.copy-btn');
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(`https://${url.shortened}`).then(() => {
+                    showToast('Link copied to clipboard!');<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b19f0d4468a762',t:'MTc0NjQ2MjYxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </html>
